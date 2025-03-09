@@ -1,6 +1,6 @@
 "use client"
 
-import { useAnimate, motion, Variant } from "framer-motion"
+import { useAnimate, motion } from "framer-motion"
 import React, { useEffect } from "react";
 
 export default function Animate({ children, playOnAwake, initial = { y: 100, opacity: 0 }, delay = 0.1, className, id }: { 
