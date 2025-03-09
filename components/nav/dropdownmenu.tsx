@@ -1,8 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
-
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
@@ -11,8 +9,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import Link from "next/link"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -117,7 +115,8 @@ const ListItem = React.forwardRef<
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
+        <Link
+			href="/"
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
@@ -129,7 +128,7 @@ const ListItem = React.forwardRef<
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   )
@@ -141,78 +140,78 @@ type NavigationMenuItem = {
 	href: string,
 	description: string,
 }
-const individuals: NavigationMenuItem[] = [
-	{
-		title: "Alert Dialog1",
-		href: "/docs/primitives/alert-dialog",
-		description:
-		  "A modal dialog that interrupts the user with important content and expects a response.",
-	  },
-	  {
-		title: "Hover Card1",
-		href: "/docs/primitives/hover-card",
-		description:
-		  "For sighted users to preview content available behind a link.",
-	  },
-	  {
-		title: "Progress1",
-		href: "/docs/primitives/progress",
-		description:
-		  "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-	  },
-	  {
-		title: "Scroll-area1",
-		href: "/docs/primitives/scroll-area",
-		description: "Visually or semantically separates content.",
-	  },
-	  {
-		title: "Tabs1",
-		href: "/docs/primitives/tabs",
-		description:
-		  "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-	  },
-	  {
-		title: "Tooltip1",
-		href: "/docs/primitives/tooltip",
-		description:
-		  "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-	  },
-]
-const organizations: NavigationMenuItem[] = [
-	  {
-		title: "Scroll-area2",
-		href: "/docs/primitives/scroll-area",
-		description: "Visually or semantically separates content.",
-	  },
-	  {
-		title: "Tabs2",
-		href: "/docs/primitives/tabs",
-		description:
-		  "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-	  },
-	  {
-		title: "Tooltip2",
-		href: "/docs/primitives/tooltip",
-		description:
-		  "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-	  },
-]
-const clinicians: NavigationMenuItem[] = [
-	  {
-		title: "Scroll-area3",
-		href: "/docs/primitives/scroll-area",
-		description: "Visually or semantically separates content.",
-	  },
-	  {
-		title: "Tabs3",
-		href: "/docs/primitives/tabs",
-		description:
-		  "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-	  },
-	  {
-		title: "Tooltip3",
-		href: "/docs/primitives/tooltip",
-		description:
-		  "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-	  },
-]
+// const individuals: NavigationMenuItem[] = [
+// 	{
+// 		title: "Alert Dialog1",
+// 		href: "/docs/primitives/alert-dialog",
+// 		description:
+// 		  "A modal dialog that interrupts the user with important content and expects a response.",
+// 	  },
+// 	  {
+// 		title: "Hover Card1",
+// 		href: "/docs/primitives/hover-card",
+// 		description:
+// 		  "For sighted users to preview content available behind a link.",
+// 	  },
+// 	  {
+// 		title: "Progress1",
+// 		href: "/docs/primitives/progress",
+// 		description:
+// 		  "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+// 	  },
+// 	  {
+// 		title: "Scroll-area1",
+// 		href: "/docs/primitives/scroll-area",
+// 		description: "Visually or semantically separates content.",
+// 	  },
+// 	  {
+// 		title: "Tabs1",
+// 		href: "/docs/primitives/tabs",
+// 		description:
+// 		  "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+// 	  },
+// 	  {
+// 		title: "Tooltip1",
+// 		href: "/docs/primitives/tooltip",
+// 		description:
+// 		  "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+// 	  },
+// ]
+// const organizations: NavigationMenuItem[] = [
+// 	  {
+// 		title: "Scroll-area2",
+// 		href: "/docs/primitives/scroll-area",
+// 		description: "Visually or semantically separates content.",
+// 	  },
+// 	  {
+// 		title: "Tabs2",
+// 		href: "/docs/primitives/tabs",
+// 		description:
+// 		  "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+// 	  },
+// 	  {
+// 		title: "Tooltip2",
+// 		href: "/docs/primitives/tooltip",
+// 		description:
+// 		  "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+// 	  },
+// ]
+// const clinicians: NavigationMenuItem[] = [
+// 	  {
+// 		title: "Scroll-area3",
+// 		href: "/docs/primitives/scroll-area",
+// 		description: "Visually or semantically separates content.",
+// 	  },
+// 	  {
+// 		title: "Tabs3",
+// 		href: "/docs/primitives/tabs",
+// 		description:
+// 		  "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+// 	  },
+// 	  {
+// 		title: "Tooltip3",
+// 		href: "/docs/primitives/tooltip",
+// 		description:
+// 		  "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+// 	  },
+// ]
