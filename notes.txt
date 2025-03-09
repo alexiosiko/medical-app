@@ -1,0 +1,11 @@
+login 
+
+booking
+
+	choose your condition
+	add notes
+	add photos
+
+	chat
+
+	clinical history
