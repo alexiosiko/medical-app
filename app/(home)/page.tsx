@@ -14,38 +14,46 @@ import {
 	AccordionItem,
 	AccordionTrigger,
   } from "@/components/ui/accordion"
+import Animate from '@/components/animations/animate'
   
 
 export default function Page() {
   return (
 	<div>
 		<LeftRight>
-			<div className='flex flex-col gap-4 fit'>
-				<Header>Virtual care solutions for organizations</Header>
-				<Description>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</Description>
-				<Button className='w-min' >Learn More</Button>
-			</div>
-			<Image src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
+			<Animate>
+				<div className='flex flex-col gap-4 fit'>
+					<Header>Virtual care solutions for organizations</Header>
+					<Description>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</Description>
+					<Button className='w-min' >Learn More</Button>
+				</div>
+			</Animate>
+			<Animate >
+				<Image src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
+			</Animate>
+
 		</LeftRight>
 
 		<div className='grid grid-cols-3 gap-24 my-24'>
-			{homelearnmoredata.map(data => 
-				<Card key={data.title} className='relative'>
-					<CardHeader>
-						<CardTitle>
-							{data.title}
-						</CardTitle>
-					</CardHeader>
-					<CardContent className=' flex flex-col'>
-						<p>{data.description}</p>
-						<Button variant="link" className='-ml-3'>
-							<FaArrowAltCircleRight size={48}/>
-							Learn More
-						</Button>
-						<Image className='object-fit bottom-4  self-end' src={data.href} width={300} height={300} alt='image.png' />
-						
-					</CardContent>
-				</Card>
+			{homelearnmoredata.map((data, index) => 
+				<Animate delay={index / 10 + 0.5} key={index}>
+					<Card className='relative'>
+						<CardHeader>
+							<CardTitle>
+								{data.title}
+							</CardTitle>
+						</CardHeader>
+						<CardContent className=' flex flex-col'>
+							<p>{data.description}</p>
+							<Button variant="link" className='-ml-3 w-min'>
+								<FaArrowAltCircleRight size={48}/>
+								Learn More
+							</Button>
+							<Image className='rounded-md object-fit bottom-4  self-end' src={data.href} width={350} height={350} alt='image.png' />
+							
+						</CardContent>
+					</Card>
+				</Animate>
 			)}
 		</div>
 
@@ -106,12 +114,12 @@ const homelearnmoredata = [
 	{
 		title: "Employers1",
 		description: "Give your employees the flexible care solutions they need.",
-		href: "/images/employers/rc-employers.png",
+		href: "/images/employers/rc-health-plans.png",
 	},
 	{
 		title: "Employers2",
 		description: "Give your employees the flexible care solutions they need.",
-		href: "/images/employers/rc-employers.png",
+		href: "/images/employers/rc-hospitals.png",
 	},
 ]
 
