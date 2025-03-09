@@ -1,6 +1,4 @@
 import React, { ReactNode } from 'react'
-import { motion } from 'framer-motion';
-import Animate from './animations/animate';
 
 export default function LeftRight({children, className}: {
 	children: ReactNode[],
