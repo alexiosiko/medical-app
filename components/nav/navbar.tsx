@@ -27,13 +27,11 @@ export default function NavBar() {
 				<SignInButton>
 					<Button variant="link">
 						<PiSignInLight className='text-primary' />
-
 						Sign In
 					</Button>
 				</SignInButton>
 				<SignUpButton>
 					<Button>Register Now</Button>
-
 				</SignUpButton>
 			</SignedOut>
 			<SignedIn>

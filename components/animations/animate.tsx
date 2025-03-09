@@ -1,11 +1,11 @@
 "use client"
 
-import { useAnimate, motion } from "framer-motion"
+import { useAnimate, motion, Variant } from "framer-motion"
 import React, { useEffect } from "react";
 
 export default function Animate({ children, playOnAwake, initial = { y: 100, opacity: 0 }, delay = 0.1, className, id }: { 
 	children: React.ReactNode,
-	initial?: any,
+	initial?: Variant,
 	delay?: number,
 	className?: string,
 	id?: string,
@@ -22,7 +22,7 @@ export default function Animate({ children, playOnAwake, initial = { y: 100, opa
 			id={id}
 			className={className}
 			ref={scope}
-			initial={initial}
+			initial={initial as any}
 			onViewportEnter={() => animate(scope.current, { y: 0, x: 0, opacity: 100}, { delay: delay})}
 		>
 			{children}

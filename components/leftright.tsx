@@ -6,9 +6,8 @@ export default function LeftRight({children, className}: {
 }) {
   return (
 	<div className={`flex  justify-center gap-24 ${className}`}>
-
-			{children[0]}
-			{children[1]}
+		{children[0]}
+		{children[1]}
 	</div>
   )
 }
