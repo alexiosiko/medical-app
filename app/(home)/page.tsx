@@ -1,9 +1,7 @@
 import LeftRight from '@/components/leftright'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import ColorBanner from '@/components/ui/colorbanner'
-import Description from '@/components/ui/description'
-import Header from '@/components/ui/header'
 import SubHeader from '@/components/ui/subheader'
 import Image from 'next/image'
 import React from 'react'
@@ -15,20 +13,24 @@ import {
 	AccordionTrigger,
   } from "@/components/ui/accordion"
 import Animate from '@/components/animations/animate'
+import Link from 'next/link'
   
 
 export default function Page() {
   return (
 	<div>
 		<LeftRight>
-			<Animate>
-				<div className='flex flex-col gap-4 fit'>
-					<Header>Virtual care solutions for organizations</Header>
-					<Description>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</Description>
-					<Button className='w-min' >Learn More</Button>
+			<Animate className='w-[55%]'>
+				<div className='flex flex-col gap-4 '>
+					<CardTitle className='text-4xl font-extrabold'>Virtual care solutions for organizations</CardTitle>
+					<CardDescription>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</CardDescription>
+					<div className='flex gap-4'>
+						<Link href="/book"><Button className='w-min'>Book Now</Button></Link>
+						<Button className='w-min' variant="secondary">Learn More</Button>
+					</div>
 				</div>
 			</Animate>
-			<Animate >
+			<Animate  >
 				<Image src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
 			</Animate>
 
@@ -73,12 +75,11 @@ export default function Page() {
 				))}
 			</div>
 
-			<Button variant="secondary" className='mt-12'>Get in Touch</Button>
 		</div>
 
 		<LeftRight>
-		<Accordion type="single" collapsible className="w-full">
-			<AccordionItem value="item-1">
+		<Accordion type="single" collapsible className="w-[50%]">
+			<AccordionItem  value="item-1">
 				<AccordionTrigger>Is it accessible?</AccordionTrigger>
 					<AccordionContent>
 					Yes. It adheres to the WAI-ARIA design pattern.
@@ -136,4 +137,4 @@ const yearsexperiencesidebannerdata = [
 	  title: "Create an experience people use and love",
 	  description: "The simple yet sophisticated interface and seamless data sharing across solutions leads to increased satisfaction for both the patient and provider",
 	},
-  ];
+];

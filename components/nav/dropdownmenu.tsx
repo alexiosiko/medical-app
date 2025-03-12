@@ -11,6 +11,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import Link from "next/link"
+import { Button } from "../ui/button"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -104,6 +105,7 @@ export function DropDownMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
+	  <Link href="/"><Button variant="link">Home</Button></Link>
     </NavigationMenu>
   )
 }

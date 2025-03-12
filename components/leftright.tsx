@@ -5,7 +5,7 @@ export default function LeftRight({children, className}: {
 	className?: string,
 }) {
   return (
-	<div className={`flex  justify-center gap-24 ${className}`}>
+	<div className={`flex justify-center place-items-center px-8  gap-24 ${className}`}>
 		{children[0]}
 		{children[1]}
 	</div>

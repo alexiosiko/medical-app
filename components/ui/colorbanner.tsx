@@ -6,6 +6,6 @@ export default function ColorBanner() {
 	className='absolute
 	bg-primary h-full
 	w-screen left-1/2
-	transform -translate-x-1/2 -z-10' />
+	transform -translate-x-1/2 -z-10 top-0' />
   )
 }
