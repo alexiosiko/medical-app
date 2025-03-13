@@ -1,30 +1,46 @@
 "use client"
 
 import { useAnimate, motion } from "framer-motion"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function Animate({ children, playOnAwake, initial = { y: 100, opacity: 0 }, delay = 0.1, className, id }: { 
+export default function Animate({ 
+	children, 
+	playOnAwake, 
+	initial = { y: 100, opacity: 0 }, 
+	delay = 0.1, 
+	className, 
+	id, 
+	maxWidth = 768 
+}: { 
 	children: React.ReactNode,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	initial?: any,
 	delay?: number,
 	className?: string,
 	id?: string,
-	playOnAwake?: boolean
+	playOnAwake?: boolean,
+	maxWidth?: number
 }) {
 	const [scope, animate] = useAnimate();
+	const [isClient, setIsClient] = useState(false);
+
 	useEffect(() => {
-		if (playOnAwake) {
-		  animate(scope.current, { y: 0, opacity: 1 }, { delay });
+		setIsClient(true); // Ensures this runs only on the client
+		if (playOnAwake && window.innerWidth > maxWidth) {
+			animate(scope.current, { y: 0, opacity: 1 }, { delay });
 		}
 	}, [])
+
 	return (
 		<motion.div
 			id={id}
 			className={className}
 			ref={scope}
-			initial={initial}
-			onViewportEnter={() => animate(scope.current, { y: 0, x: 0, opacity: 100}, { delay: delay})}
+			initial={isClient && window.innerWidth > maxWidth ? initial : { opacity: 1, y: 0 }}
+			onViewportEnter={() => {
+				if (isClient && window.innerWidth > maxWidth) {
+					animate(scope.current, { y: 0, x: 0, opacity: 1 }, { delay });
+				}
+			}}
 		>
 			{children}
 		</motion.div>
