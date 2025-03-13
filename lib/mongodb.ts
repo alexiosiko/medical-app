@@ -14,9 +14,9 @@ declare global {
 	var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-if (!uri) {
+if (!uri) 
 	throw new Error('Please add your MongoDB URI to .env.local');
-}
+
 
 if (process.env.NODE_ENV === 'development') {
 	// In development mode, reuse the global promise to avoid multiple connections
