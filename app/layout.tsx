@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/nav/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import Footer from "@/components/footer/footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const font = Montserrat({
 	weight: "400",
@@ -31,6 +32,16 @@ export default function RootLayout({
 					</header>
 					{children}
 					<Footer />
+					<Toaster
+						closeButton
+						richColors
+						theme="light"
+						toastOptions={{
+							classNames: {
+								error: "bg-red-500 text-white", // Tailwind CSS classes for red background and white text
+							},
+						}}
+					/>
 				</body>
 			</html>
 		</ClerkProvider>
