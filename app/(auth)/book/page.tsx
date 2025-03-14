@@ -45,7 +45,6 @@ return (
 			/>
 			<Times selectedTime={time} setTime={setTime} />
 			<AppointmentType
-			add
 			selectedType={appointmentType}
 			setAppointmentType={setAppointmentType}
 			/>
