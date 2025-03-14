@@ -7,22 +7,32 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
 	try {
 	  // Access query parameters
-		const searchParams = request.nextUrl.searchParams;
+	  const searchParams = request.nextUrl.searchParams;
 	  const id = searchParams.get('id');
 	  if (!id)
 		return NextResponse.json({ message: 'User ID is required.' }, { status: 400 });
   
 	  const db = await dbPromise();
-	  const existingUser = await db.collection('users').findOne({ id: id });
+	  let user = await db.collection('users').findOne({ id: id });
   
-	  if (!existingUser)
-		return NextResponse.json({ message: `User with id ${id} not found.` }, { status: 404 });
+	  if (!user) {
+		// User doesn't exist, create a new one
+		const newUser: User = {
+			id: id,
+			dateOfBirth: undefined,
+			gender: undefined,
+			preferredName: undefined,
+			createdAt: new Date()
+		};
+		const result = await db.collection('users').insertOne(newUser);
+		user = { ...newUser, _id: result.insertedId };
+	  }
   
-	  return NextResponse.json(existingUser);
+	  return NextResponse.json(user);
 	} catch (error: any) {
 	  return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
 	}
-}
+  }
 
 export async function POST(request: Request) {
 	const json = await validateRequestAndParseToJson(request);
@@ -41,7 +51,8 @@ export async function POST(request: Request) {
 			dateOfBirth: undefined,
 			gender: undefined,
 			id: id,
-			preferredName: undefined
+			preferredName: undefined,
+			createdAt: new Date(),
 		}
 		await db.collection('users').insertOne(user);
 		return NextResponse.json({ message: "Created user with Id" });

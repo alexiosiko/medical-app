@@ -6,7 +6,6 @@ import Times from "@/components/book/times";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AppointmentType from "@/components/book/appointmenttype";
 import { Button } from "@/components/ui/button";
-import BookAlertDialog from "@/components/book/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	AlertDialog,
