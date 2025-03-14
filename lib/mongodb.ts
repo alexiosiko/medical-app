@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 
 async function dbPromise() {
     if (!db)
-        db = (await clientPromise).db("greek");
+        db = (await clientPromise).db("medical-app");
     return db;
 }
 

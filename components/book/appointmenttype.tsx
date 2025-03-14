@@ -23,7 +23,7 @@ const AppointmentType: React.FC<AppointmentTypeProps> = ({
 }) => {
   return (
     <div>
-      <div className="text-center mb-4 mt-12">Appointment Type</div>
+      <div className=" mb-4 mt-12">Appointment Type</div>
       <div className="flex gap-4">
         <RadioGroup
           value={selectedType}

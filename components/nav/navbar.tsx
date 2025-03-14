@@ -8,6 +8,14 @@ import {
 	SignedOut,
 	UserButton,
   } from '@clerk/nextjs'
+  import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+  } from "@/components/ui/navigation-menu"
 import { Button } from '../ui/button'
 import { PiSignInLight } from 'react-icons/pi'
 import Animate from '../animations/animate'
@@ -22,9 +30,7 @@ export default function NavBar() {
 			shadow-lg items-center place-items-center'
 			initial={{ y: -200 }}
 			>
-			<div className="max-md:hidden">
-				<DropDownMenu />
-			</div>
+			<DropDownMenu />
 			<div className='md:hidden'>
 				<Sidebar />
 			</div>
@@ -44,8 +50,21 @@ export default function NavBar() {
 					</SignUpButton>
 				</SignedOut>
 				<SignedIn>
-					<Link href="/manage" className='max-md:hidden'><Button variant="secondary">Manage</Button></Link>
-					<UserButton />
+					<NavigationMenu className='max-md:hidden'>
+						<NavigationMenuList>
+							<NavigationMenuItem>
+							<NavigationMenuTrigger>Profile</NavigationMenuTrigger>
+							<NavigationMenuContent>
+								<div className='flex flex-col gap-1 w-42'>
+									<NavigationMenuLink href="/profile">Personal Information</NavigationMenuLink>
+									{/* <NavigationMenuLink href="/">History</NavigationMenuLink> */}
+									{/* <NavigationMenuLink href="/">Bills</NavigationMenuLink> */}
+								</div>
+							</NavigationMenuContent>
+							</NavigationMenuItem>
+						</NavigationMenuList>
+					</NavigationMenu>
+						<UserButton />
 				</SignedIn>
 			</div>
 		</Animate>

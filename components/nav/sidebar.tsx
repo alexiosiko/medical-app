@@ -21,15 +21,12 @@ export function Sidebar() {
             <SheetTitle className="text-center">Navigation</SheetTitle>
           </SheetHeader>
           <div className="flex flex-col items-center gap-4">
-            <Link href="/" onClick={() => setOpen(false)}>
-              <Button variant="link" className="text-lg">Home</Button>
-            </Link>
-            <Link href="/manage" onClick={() => setOpen(false)}>
-              <Button variant="link" className="text-lg">Manage</Button>
-            </Link>
-            <Link href="/book" onClick={() => setOpen(false)}>
-              <Button variant="link" className="text-lg">Book Appointment</Button>
-            </Link>
+			
+            <Link href="/" onClick={() => setOpen(false)}>Home</Link>
+            <Link href="/book" onClick={() => setOpen(false)}>Book Appointment</Link>
+			<Link href="/profile" onClick={() => setOpen(false)}>Profile</Link>
+			{/* <Link href="/history" onClick={() => setOpen(false)}>History (Not done)</Link> */}
+			{/* <Link href="/manage" onClick={() => setOpen(false)}>Manage (Not done)</Link> */}
           </div>
         </SheetContent>
       </Sheet>

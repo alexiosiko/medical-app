@@ -29,7 +29,8 @@ const Times: React.FC<TimesProps> = ({ selectedTime, setTime }) => {
     <div className="flex gap-4 flex-wrap justify-center">
       {timesData.map((time, index) => (
         <Button
-          key={index}
+		size="sm"
+			key={index}
           disabled={time.disabled}
           onClick={() => setTime(time.time)}
           className={time.time === selectedTime ? "bg-blue-500 text-white" : ""}

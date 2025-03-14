@@ -5,10 +5,20 @@ import { Calendar } from "@/components/ui/calendar";
 import Times from "@/components/book/times";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AppointmentType from "@/components/book/appointmenttype";
-import Description from "@/components/book/description";
 import { Button } from "@/components/ui/button";
 import BookAlertDialog from "@/components/book/alert-dialog";
-
+import { Textarea } from "@/components/ui/textarea";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog";
 export default function Page() {
 const [date, setDate] = useState<Date | undefined>(new Date());
 const [time, setTime] = useState<string>("");
@@ -35,22 +45,37 @@ return (
 			/>
 			<Times selectedTime={time} setTime={setTime} />
 			<AppointmentType
+			add
 			selectedType={appointmentType}
 			setAppointmentType={setAppointmentType}
 			/>
-			<Description description={description} setDescription={setDescription} />
-			<Button onClick={handleBooking}>Book Appointment</Button>
-			<BookAlertDialog
-			isOpen={isDialogOpen}
-			onClose={() => setIsDialogOpen(false)}
-			bookingDetails={{
-				date: date?.toLocaleDateString() || "",
-				time,
-				appointmentType,
-				description,
-			}}
-			/>
-		</CardContent>
+			<Textarea
+					className="w-full h-32 mt-6"
+					placeholder="Give the reason for your appointment here ..."
+					value={description}
+					onChange={(e) => setDescription(e.target.value)}
+				/>
+							<AlertDialog >
+								<AlertDialogTrigger asChild>
+									<Button>Book Appointment</Button>
+								</AlertDialogTrigger>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+						<AlertDialogTitle>Confirm Your Appointment</AlertDialogTitle>
+						<AlertDialogDescription>
+							<span><strong>Date:</strong> {date?.toLocaleDateString()}</span><br />
+							<span><strong>Time:</strong> {time}</span><br />
+							<span><strong>Type:</strong> {appointmentType}</span><br />
+							<span><strong>Description:</strong> {description}</span>
+						</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+						<AlertDialogCancel >Cancel</AlertDialogCancel>
+						<AlertDialogAction >Confirm</AlertDialogAction>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+					</AlertDialog> 
+					</CardContent>
 		</Card>
 	);
 }
