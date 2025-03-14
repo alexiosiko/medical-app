@@ -21,26 +21,23 @@ export default function Animate({
 	maxWidth?: number
 }) {
 	const [scope, animate] = useAnimate();
-	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
-		setIsClient(true); // Ensures this runs only on the client
-		if (playOnAwake && window.innerWidth > maxWidth) {
+		if (playOnAwake && window.innerWidth > maxWidth) 
+		{
 			animate(scope.current, { y: 0, opacity: 1 }, { delay });
+			console.log("mobile");
 		}
 	}, [])
 
+	
 	return (
 		<motion.div
-			id={id}
+			// id={id}
 			className={className}
 			ref={scope}
-			initial={isClient && window.innerWidth > maxWidth ? initial : { opacity: 1, y: 0 }}
-			onViewportEnter={() => {
-				if (isClient && window.innerWidth > maxWidth) {
-					animate(scope.current, { y: 0, x: 0, opacity: 1 }, { delay });
-				}
-			}}
+			// initial={initial}
+			// onViewportEnter={() => animate(scope.current, { y: 0, x: 0, opacity: 100}, { delay: delay})}
 		>
 			{children}
 		</motion.div>

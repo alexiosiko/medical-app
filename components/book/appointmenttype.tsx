@@ -24,14 +24,14 @@ const AppointmentType: React.FC<AppointmentTypeProps> = ({
   return (
     <div>
       <div className=" mb-4 mt-12">Appointment Type</div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
         <RadioGroup
           value={selectedType}
           onValueChange={setAppointmentType}
         >
           {appointments.map((appointment) => (
             <div key={appointment.name} className="flex items-center space-x-2">
-              <RadioGroupItem value={appointment.name} id={appointment.name} />
+              <RadioGroupItem className="mt-4" value={appointment.name} id={appointment.name} />
               <Label htmlFor={appointment.name}>{appointment.name}</Label>
             </div>
           ))}

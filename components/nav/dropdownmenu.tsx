@@ -53,7 +53,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function DropDownMenu() {
 return (
-	<NavigationMenu className="max-md:hidden">
+	<NavigationMenu className="max-md:hidden flex gap-4">
 	<NavigationMenuList>
 		<NavigationMenuItem>
 		<NavigationMenuTrigger>Appointments</NavigationMenuTrigger>
@@ -88,6 +88,7 @@ return (
 		</NavigationMenuContent>
 		</NavigationMenuItem>
 	</NavigationMenuList>
+	<NavigationMenuLink href="/">Home</NavigationMenuLink>
 	</NavigationMenu>
 )
 }

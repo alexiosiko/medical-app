@@ -36,19 +36,22 @@ return (
 			<CardTitle className="text-center">Book an Appointment</CardTitle>
 		</CardHeader>
 		<CardContent className="flex flex-col items-center gap-4">
-			<Calendar
-			mode="single"
-			selected={date}
-			onSelect={setDate}
-			className="rounded-md border shadow text-3xl font-bold"
-			/>
+			<div className="h-80">
+
+				<Calendar
+				mode="single"
+				selected={date}
+				onSelect={setDate}
+				className="rounded-md border shadow text-3xl font-bold"
+				/>
+			</div>
 			<Times selectedTime={time} setTime={setTime} />
 			<AppointmentType
 			selectedType={appointmentType}
 			setAppointmentType={setAppointmentType}
 			/>
 			<Textarea
-					className="w-full h-32 mt-6"
+					className="h-32  !max-w-[95%] mt-12"
 					placeholder="Give the reason for your appointment here ..."
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
