@@ -27,13 +27,14 @@ onClick,
 		e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 	) => {
 		e.preventDefault();
-		if (onClick)
-			onClick();
+
 		const main = document.querySelector("main");
 
 		main?.classList.add("page-transition");
 
 		await sleep(100);
+		if (onClick)
+			onClick();
 		router.push(href);
 		await sleep(100);
 
