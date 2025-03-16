@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import Link from "next/link"
 import { LiaGripLinesSolid } from "react-icons/lia";
 import { CardTitle } from "../ui/card";
+import { TransitionLink } from "../animations/transitionlink";
 
 export function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -23,17 +23,17 @@ export function Sidebar() {
           </SheetHeader>
           <div className="flex flex-col items-center gap-4">
 			
-            <Link href="/" onClick={() => setOpen(false)}>Home</Link>
+            <TransitionLink href="/" onClick={() => setOpen(false)}>Home</TransitionLink>
 			
 			<CardTitle className="mt-8">Account</CardTitle>
-            <Link  href="/profile" onClick={() => setOpen(false)}>Profile</Link>
-			<Link href="" className="text-muted-foreground" onClick={() => {}}>Documents</Link>
-			<Link href="" className="text-muted-foreground" onClick={() => {}}>Emergency Contacts</Link>
-			<Link href="" className="text-muted-foreground" onClick={() => {}}>Billing</Link>
+            <TransitionLink href="/profile" onClick={() => setOpen(false)}>Profile</TransitionLink>
+			<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Documents</TransitionLink>
+			<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Emergency Contacts</TransitionLink>
+			<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Billing</TransitionLink>
 			
 			<CardTitle className="mt-8">Appointments</CardTitle>
-            <Link href="/manage/appointments" onClick={() => setOpen(false)}>Manage</Link>
-			<Link href="/create/appointment" onClick={() => setOpen(false)}>Create</Link>
+            <TransitionLink href="/manage/appointments" onClick={() => setOpen(false)}>Manage</TransitionLink>
+			<TransitionLink href="/create/appointment" onClick={() => setOpen(false)}>Create</TransitionLink>
 			
           </div>
         </SheetContent>

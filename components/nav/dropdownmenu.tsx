@@ -10,8 +10,7 @@ NavigationMenuLink,
 NavigationMenuList,
 NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import Link from "next/link"
-import { Button } from "../ui/button"
+import { TransitionLink } from "../animations/transitionlink"
 
 const components: { title: string; href: string; description: string }[] = [
 {
@@ -61,7 +60,7 @@ return (
 			<ul className="flex w-96">
 				<li className="w-1/2">
 					<NavigationMenuLink asChild>
-					<Link
+					<TransitionLink
 						className="flex h-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
 						href="/"
 					>
@@ -73,7 +72,7 @@ return (
 						Beautifully designed components built with Radix UI and
 						Tailwind CSS.
 						</p>
-					</Link>
+					</TransitionLink>
 					</NavigationMenuLink>
 				</li>
 				<div className="px-2">
@@ -99,10 +98,9 @@ React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, ...props }, ref) => {
 return (
 	<li>
-	<NavigationMenuLink asChild>
-		<Link
+	<NavigationMenuLink asChild ref={ref}>
+		<TransitionLink
 			href="/"
-		ref={ref}
 		className={cn(
 			"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
 			className
@@ -113,7 +111,7 @@ return (
 		<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
 			{children}
 		</p>
-		</Link>
+		</TransitionLink>
 	</NavigationMenuLink>
 	</li>
 )

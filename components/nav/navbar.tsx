@@ -19,9 +19,9 @@ import {
 import { Button } from '../ui/button'
 import { PiSignInLight } from 'react-icons/pi'
 import Animate from '../animations/animate'
-import Link from 'next/link'
 import { Sidebar } from './sidebar'
 import { CardDescription, CardTitle } from '../ui/card'
+import { TransitionLink } from '../animations/transitionlink'
 
 export default function NavBar() {
   return (
@@ -35,9 +35,9 @@ export default function NavBar() {
 			<div className='md:hidden'>
 				<Sidebar />
 			</div>
-			<Link href="/">
+			<TransitionLink href="/">
 				<Image className='object-contain' src="/logos/TDH_Logo_Full_Color_RGB.svg" height={200} width={200} alt='logo.svg' />
-			</Link>
+			</TransitionLink>
 			<div className='flex gap-4'>
 				<SignedOut>
 					<SignInButton>
@@ -57,20 +57,29 @@ export default function NavBar() {
 							<NavigationMenuTrigger>Account</NavigationMenuTrigger>
 							<NavigationMenuContent>
 								<div className='flex flex-col gap-1 w-64'>
-									<NavigationMenuLink href="/profile">
-										<CardTitle className='text-md'>Profile</CardTitle>
-										<CardDescription>Basic information about you, your contact information and your address</CardDescription>
+									<NavigationMenuLink asChild>
+										<TransitionLink href='/profile'>
+											<CardTitle className='text-md'>Profile</CardTitle>
+											<CardDescription>Basic information about you, your contact information and your address</CardDescription>
+
+										</TransitionLink>
 									</NavigationMenuLink>
-									<NavigationMenuLink href="/profile">
-										<CardTitle className='text-md'>Documents (Not Done)</CardTitle>
-										<CardDescription>Upload your personal health documents file documents</CardDescription>
+									<NavigationMenuLink asChild>
+										<TransitionLink href='/'>
+											<CardTitle className='text-md'>Documents (Not Done)</CardTitle>
+											<CardDescription>Upload your personal health documents file documents</CardDescription>
+										</TransitionLink>
 									</NavigationMenuLink>
-									<NavigationMenuLink href="/profile">
-										<CardTitle className='text-md'>Emergency Contacts (Not Done)</CardTitle>
-										<CardDescription>Tell us who to contact and how to reach them if you have a health emergency</CardDescription>
+									<NavigationMenuLink asChild>
+										<TransitionLink href='/'>
+											<CardTitle className='text-md'>Emergency Contacts (Not Done)</CardTitle>
+											<CardDescription>Tell us who to contact and how to reach them if you have a health emergency</CardDescription>
+										</TransitionLink>
 									</NavigationMenuLink>
-									<NavigationMenuLink href="/profile">
+									<NavigationMenuLink asChild>
+										<TransitionLink href='/'>
 										<CardTitle className='text-md'>Billings (Not Done)</CardTitle>
+										</TransitionLink>
 									</NavigationMenuLink>
 								</div>
 							</NavigationMenuContent>

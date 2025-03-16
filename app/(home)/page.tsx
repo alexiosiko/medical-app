@@ -13,7 +13,8 @@ import {
 	AccordionTrigger,
   } from "@/components/ui/accordion"
 import Animate from '@/components/animations/animate'
-import Link from 'next/link'
+import { TransitionLink } from '@/components/animations/transitionlink'
+
   
 
 export default function Page() {
@@ -26,7 +27,7 @@ export default function Page() {
 					<CardTitle className='text-4xl font-extrabold'>Virtual care solutions for organizations</CardTitle>
 					<CardDescription>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</CardDescription>
 					<div className='flex gap-4 max-md:justify-center'>
-						<Link href="/create/appointment"><Button className='w-min'>Book Now</Button></Link>
+						<TransitionLink href="/create/appointment"><Button className='w-min'>Book Now</Button></TransitionLink>
 						<Button className='w-min' variant="secondary">Learn More</Button>
 					</div>
 				</div>

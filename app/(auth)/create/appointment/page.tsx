@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const BookingForm = () => {
   	const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -18,6 +19,8 @@ const BookingForm = () => {
 	const [communicationMethod, setCommunicationMethod] = useState<'chat' | 'video' | 'in-person'>('in-person');
 	const [document, setDocument] = useState<File | undefined>(undefined);
 	const [uploading, setUploading] = useState<boolean>(false);
+
+	const router = useRouter();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		try {
@@ -31,9 +34,9 @@ const BookingForm = () => {
 			formData.append('time', selectedTime);
 			formData.append('description', description);
 			formData.append('communicationMethod', communicationMethod);
-			if (document) {
+			if (document) 
 				formData.append('document', document);
-			}
+			
 	  
 			const response = await axios.post('/api/appointments', formData, {
 				headers: {
@@ -46,12 +49,8 @@ const BookingForm = () => {
 
 			toast.success('Booking submitted successfully');
 
+			router.push('/create/appointment/success')
 			// Reset params
-			setSelectedDate(undefined);
-			setSelectedTime(undefined);
-			setDescription("");
-			setCommunicationMethod('in-person');
-			setDocument(undefined);
 		} catch (error) {
 		  toast.error('Error submitting booking');
 		} finally {
@@ -77,7 +76,7 @@ const BookingForm = () => {
           </div>
           <div>
             <Label htmlFor="time">Time</Label>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-5 gap-2 justify-center ">
               {timeSlots.map((time) => (
                 <Button
                   key={time}

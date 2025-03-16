@@ -5,6 +5,7 @@ import NavBar from "@/components/nav/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import Footer from "@/components/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { AnimatePresence } from "framer-motion";
 
 const font = Montserrat({
 	weight: "400",
@@ -25,13 +26,18 @@ export default function RootLayout({
 }>) {
 	return (
 		<ClerkProvider>
-			<html lang="en">
-				<body className={`${font.className} w-screen overflow-x-hidden antialiased max-w-7xl mx-auto px-2`}>
+			<html lang="en" className="overflow-x-hidden">
+				<body className={`${font.className} w-screen overflow-x-hidden antialiased`}>
 					<header className="mb-32 ">
 						<NavBar />
 					</header>
-					{children}
-					<Footer />
+					<main className="max-w-7xl mx-auto px-2 min-h-screen flex flex-col">
+						<div className="flex-grow">
+							{children}
+						</div>
+						<Footer />
+					</main>
+
 					<Toaster
 						closeButton
 						richColors

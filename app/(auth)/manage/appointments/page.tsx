@@ -6,7 +6,7 @@ import { useAuth } from '@clerk/nextjs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import Link from 'next/link';
+import { TransitionLink } from '@/components/animations/transitionlink';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -131,20 +131,20 @@ export default function AppointmentsPage() {
     return (
       <div className="p-4 text-center">
         <h2 className="text-xl font-semibold mb-4">Please sign in to view appointments</h2>
-        <Link href="/sign-in">
+        <TransitionLink href="/sign-in">
           <Button>Sign In</Button>
-        </Link>
+        </TransitionLink>
       </div>
     );
   }
 
   return (
-    <div className="md:p-4">
+    <div className="md:p-4 ">
       <div className="flex max-md:flex-col space-y-2 justify-between items-center">
         <h1 className="text-2xl font-bold">My Appointments</h1>
-        <Link href="/create/appointment">
+        <TransitionLink href="/create/appointment">
           <Button>New Appointment</Button>
-        </Link>
+        </TransitionLink>
       </div>
 
       {appointments.length === 0 ? (
@@ -155,11 +155,12 @@ export default function AppointmentsPage() {
         <AnimatePresence>
           {appointments.map((appointment) => (
 			<motion.div 
-			  	layout="position"
-					key={appointment._id}
-					exit={{ opacity: 0, x: 500 }}
-					transition={{ duration: 0.3 }}
-					className='mb-4'
+				layout="position"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				key={appointment._id}
+				exit={{ opacity: 0, x: 500 }}
+				className='mb-4'
 				>
 				<Card key={appointment._id}>
 				<CardContent className="p-4 flex justify-between items-center">
@@ -180,7 +181,7 @@ export default function AppointmentsPage() {
 					</div>
 					
 					<AlertDialog>
-					<AlertDialogTrigger >
+					<AlertDialogTrigger asChild >
 						<Button 
 						variant="destructive" 
 						disabled={deletingId === appointment._id}
