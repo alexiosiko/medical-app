@@ -33,7 +33,7 @@ export default function Page() {
 				</div>
 			</Animate>
 			<Animate>
-				<Image src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
+				<Image loading='eager' src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
 			</Animate>
 
 		</LeftRight>

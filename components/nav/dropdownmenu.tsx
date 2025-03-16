@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
 import {
 NavigationMenu,
 NavigationMenuContent,
@@ -11,6 +10,7 @@ NavigationMenuList,
 NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { TransitionLink } from "../animations/transitionlink"
+import { CardDescription, CardTitle } from "../ui/card"
 
 const components: { title: string; href: string; description: string }[] = [
 {
@@ -52,39 +52,21 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function DropDownMenu() {
 return (
+	
 	<NavigationMenu className="max-md:hidden flex gap-4">
 	<NavigationMenuList>
 		<NavigationMenuItem>
 		<NavigationMenuTrigger>Appointments</NavigationMenuTrigger>
-		<NavigationMenuContent>
-			<ul className="flex w-96">
-				<li className="w-1/2">
-					<NavigationMenuLink asChild>
-					<TransitionLink
-						className="flex h-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-						href="/"
-					>
-						{/* <Icons.logo className="h-6 w-6" /> */}
-						<div className="mb-2 mt-4 text-lg font-medium">
-						shadcn/ui
-						</div>
-						<p className="text-sm leading-tight text-muted-foreground">
-						Beautifully designed components built with Radix UI and
-						Tailwind CSS.
-						</p>
-					</TransitionLink>
-					</NavigationMenuLink>
-				</li>
-				<div className="px-2">
-					<ListItem href="/create/appointment" title="Book">
-						Create an appointment with us!
-					</ListItem>
-					<ListItem href="/manage/appointments" title="Manage">
-						Have a question? Reach out!
-					</ListItem>
-				</div>
-			</ul>
-		</NavigationMenuContent>
+			<NavigationMenuContent className="flex flex-col w-96">
+				<TransitionLink href='/create/appointment' className="hover:bg-accent p-2 rounded-sm">
+					<CardTitle className='text-md'>Book Appointment</CardTitle>
+					<CardDescription>Book a time and a place to get started!</CardDescription>
+				</TransitionLink>
+				<TransitionLink href='/manage/appointments' className="hover:bg-accent p-2 rounded-sm">
+					<CardTitle className='text-md'>Manage</CardTitle>
+					<CardDescription>Manage your appointments</CardDescription>
+				</TransitionLink>
+			</NavigationMenuContent>
 		</NavigationMenuItem>
 	</NavigationMenuList>
 	<NavigationMenuLink href="/">Home</NavigationMenuLink>
@@ -92,27 +74,6 @@ return (
 )
 }
 
-const ListItem = React.forwardRef<
-React.ComponentRef<"a">,
-React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-return (
-	<li>
-	<NavigationMenuLink asChild ref={ref}>
-		<TransitionLink
-			href="/"
-			className={"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"}
-		>
-			<div className="text-sm font-medium leading-none">{title}</div>
-			<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-				{children}
-			</p>
-		</TransitionLink>
-	</NavigationMenuLink>
-	</li>
-)
-})
-ListItem.displayName = "ListItem"
 
 type NavigationMenuItem = {
 	title: string,

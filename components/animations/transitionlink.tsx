@@ -39,7 +39,6 @@ onClick,
 
 		main?.classList.remove("page-transition");
 	};
-
 	return (
 		<Link className={className} {...props} href={href} onClick={handleTransition}>
 			{children}

@@ -1,5 +1,6 @@
 "use client"
 
+import { TransitionLink } from '@/components/animations/transitionlink';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
@@ -17,8 +18,8 @@ export default function page() {
 		
 		</CardContent>
 		<CardFooter className='flex justify-end gap-2'>
-			<Button variant="secondary" onClick={() => router.push("/")}>Go Home</Button>
-			<Button onClick={() => router.push("/manage/appointments")}>Manage Appointments</Button>
+		 	<TransitionLink href='/'><Button variant="secondary" >Go Home</Button></TransitionLink>	
+		 	<TransitionLink href='/manage/appointments'><Button>Manage Appointments</Button></TransitionLink>	
 		</CardFooter>
 	</Card>
   )

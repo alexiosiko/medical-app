@@ -27,7 +27,10 @@ const BookingForm = () => {
 			setUploading(true);
 			e.preventDefault();
 		
-			if (!selectedDate || !selectedTime) return;
+			if (!selectedDate)
+				throw Error("Must select a date");
+			if (!selectedTime)
+				throw Error("Must select a time");
 		
 			const formData = new FormData();
 			formData.append('date', selectedDate.toISOString());

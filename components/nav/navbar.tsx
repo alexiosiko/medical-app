@@ -55,38 +55,27 @@ export default function NavBar() {
 						<NavigationMenuList>
 							<NavigationMenuItem>
 							<NavigationMenuTrigger>Account</NavigationMenuTrigger>
-							<NavigationMenuContent>
-								<div className='flex flex-col gap-1 w-64'>
-									<NavigationMenuLink asChild>
-										<TransitionLink href='/profile'>
-											<CardTitle className='text-md'>Profile</CardTitle>
-											<CardDescription>Basic information about you, your contact information and your address</CardDescription>
-
-										</TransitionLink>
-									</NavigationMenuLink>
-									<NavigationMenuLink asChild>
-										<TransitionLink href='/'>
-											<CardTitle className='text-md'>Documents (Not Done)</CardTitle>
-											<CardDescription>Upload your personal health documents file documents</CardDescription>
-										</TransitionLink>
-									</NavigationMenuLink>
-									<NavigationMenuLink asChild>
-										<TransitionLink href='/'>
-											<CardTitle className='text-md'>Emergency Contacts (Not Done)</CardTitle>
-											<CardDescription>Tell us who to contact and how to reach them if you have a health emergency</CardDescription>
-										</TransitionLink>
-									</NavigationMenuLink>
-									<NavigationMenuLink asChild>
-										<TransitionLink href='/'>
+							<NavigationMenuContent className='flex flex-col'>
+									<TransitionLink href='/profile' className='hover:bg-accent p-2 rounded-sm'>
+										<CardTitle className='text-md'>Profile</CardTitle>
+										<CardDescription>Basic information about you, your contact information and your address</CardDescription>
+									</TransitionLink>
+									<TransitionLink href='/' className='hover:bg-accent p-2 rounded-sm'>
+										<CardTitle className='text-md'>Documents (Not Done)</CardTitle>
+										<CardDescription>Upload your personal health documents file documents</CardDescription>
+									</TransitionLink>
+									<TransitionLink href='/' className='hover:bg-accent p-2 rounded-sm'>
+										<CardTitle className='text-md'>Emergency Contacts (Not Done)</CardTitle>
+										<CardDescription>Tell us who to contact and how to reach them if you have a health emergency</CardDescription>
+									</TransitionLink>
+									<TransitionLink href='/' className='hover:bg-accent p-2 rounded-sm'>
 										<CardTitle className='text-md'>Billings (Not Done)</CardTitle>
-										</TransitionLink>
-									</NavigationMenuLink>
-								</div>
+									</TransitionLink>
 							</NavigationMenuContent>
 							</NavigationMenuItem>
 						</NavigationMenuList>
 					</NavigationMenu>
-						<UserButton />
+					<UserButton />
 				</SignedIn>
 			</div>
 		</Animate>
