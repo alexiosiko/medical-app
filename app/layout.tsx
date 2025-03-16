@@ -26,8 +26,8 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en">
-				<body className={`${font.className} w-screen overflow-x-hidden" antialiased max-w-7xl mx-auto px-2`}>
-					<header className="mb-48">
+				<body className={`${font.className} w-screen overflow-x-hidden antialiased max-w-7xl mx-auto px-2`}>
+					<header className="mb-32 ">
 						<NavBar />
 					</header>
 					{children}

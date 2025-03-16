@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import Link from "next/link"
 import { LiaGripLinesSolid } from "react-icons/lia";
+import { CardTitle } from "../ui/card";
 
 export function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -23,10 +24,17 @@ export function Sidebar() {
           <div className="flex flex-col items-center gap-4">
 			
             <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-            <Link href="/book" onClick={() => setOpen(false)}>Book Appointment</Link>
-			<Link href="/profile" onClick={() => setOpen(false)}>Profile</Link>
-			{/* <Link href="/history" onClick={() => setOpen(false)}>History (Not done)</Link> */}
-			{/* <Link href="/manage" onClick={() => setOpen(false)}>Manage (Not done)</Link> */}
+			
+			<CardTitle className="mt-8">Account</CardTitle>
+            <Link  href="/profile" onClick={() => setOpen(false)}>Profile</Link>
+			<Link href="" className="text-muted-foreground" onClick={() => {}}>Documents</Link>
+			<Link href="" className="text-muted-foreground" onClick={() => {}}>Emergency Contacts</Link>
+			<Link href="" className="text-muted-foreground" onClick={() => {}}>Billing</Link>
+			
+			<CardTitle className="mt-8">Appointments</CardTitle>
+            <Link href="/manage/appointments" onClick={() => setOpen(false)}>Manage</Link>
+			<Link href="/create/appointment" onClick={() => setOpen(false)}>Create</Link>
+			
           </div>
         </SheetContent>
       </Sheet>

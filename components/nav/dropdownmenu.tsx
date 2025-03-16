@@ -77,10 +77,10 @@ return (
 					</NavigationMenuLink>
 				</li>
 				<div className="px-2">
-					<ListItem href="/book" title="Book">
+					<ListItem href="/create/appointment" title="Book">
 						Create an appointment with us!
 					</ListItem>
-					<ListItem href="/docs" title="Contact">
+					<ListItem href="/manage/appointments" title="Manage">
 						Have a question? Reach out!
 					</ListItem>
 				</div>

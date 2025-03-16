@@ -21,6 +21,7 @@ import { PiSignInLight } from 'react-icons/pi'
 import Animate from '../animations/animate'
 import Link from 'next/link'
 import { Sidebar } from './sidebar'
+import { CardDescription, CardTitle } from '../ui/card'
 
 export default function NavBar() {
   return (
@@ -53,12 +54,24 @@ export default function NavBar() {
 					<NavigationMenu className='max-md:hidden'>
 						<NavigationMenuList>
 							<NavigationMenuItem>
-							<NavigationMenuTrigger>Profile</NavigationMenuTrigger>
+							<NavigationMenuTrigger>Account</NavigationMenuTrigger>
 							<NavigationMenuContent>
-								<div className='flex flex-col gap-1 w-42'>
-									<NavigationMenuLink href="/profile">Personal Information</NavigationMenuLink>
-									{/* <NavigationMenuLink href="/">History</NavigationMenuLink> */}
-									{/* <NavigationMenuLink href="/">Bills</NavigationMenuLink> */}
+								<div className='flex flex-col gap-1 w-64'>
+									<NavigationMenuLink href="/profile">
+										<CardTitle className='text-md'>Profile</CardTitle>
+										<CardDescription>Basic information about you, your contact information and your address</CardDescription>
+									</NavigationMenuLink>
+									<NavigationMenuLink href="/profile">
+										<CardTitle className='text-md'>Documents (Not Done)</CardTitle>
+										<CardDescription>Upload your personal health documents file documents</CardDescription>
+									</NavigationMenuLink>
+									<NavigationMenuLink href="/profile">
+										<CardTitle className='text-md'>Emergency Contacts (Not Done)</CardTitle>
+										<CardDescription>Tell us who to contact and how to reach them if you have a health emergency</CardDescription>
+									</NavigationMenuLink>
+									<NavigationMenuLink href="/profile">
+										<CardTitle className='text-md'>Billings (Not Done)</CardTitle>
+									</NavigationMenuLink>
 								</div>
 							</NavigationMenuContent>
 							</NavigationMenuItem>

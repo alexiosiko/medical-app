@@ -40,7 +40,7 @@ export default function UserProfileUpdate() {
 		} catch (e) {
 			console.error(e);
 			toast.error("Error fetching data :(");
-		} finally {
+		} finally { 
 			setLoading(false);
 		}
 		}
