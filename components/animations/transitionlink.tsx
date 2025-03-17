@@ -1,7 +1,7 @@
 "use client";
 import Link, { LinkProps } from "next/link";
-import React, { ComponentRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { ComponentRef, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface TransitionLinkProps extends LinkProps {
 	children: React.ReactNode;
@@ -22,23 +22,21 @@ onClick,
 ...props
 }) => {
 	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 
-	const handleTransition = async (
-		e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-	) => {
+	useEffect(() => {
+		// Navigation has completed
+		const main = document.querySelector('main');
+		main?.classList.remove('page-transition');
+	}, [pathname, searchParams]);
+
+	const handleTransition = async (e: any) => {
 		e.preventDefault();
-
-		const main = document.querySelector("main");
-
-		main?.classList.add("page-transition");
-
-		await sleep(100);
-		if (onClick)
-			onClick();
+		const main = document.querySelector('main');
+		main?.classList.add('page-transition');
+		if (onClick) onClick();
 		router.push(href);
-		await sleep(100);
-
-		main?.classList.remove("page-transition");
 	};
 	return (
 		<Link className={className} {...props} href={href} onClick={handleTransition}>
