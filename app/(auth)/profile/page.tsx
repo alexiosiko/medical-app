@@ -1,5 +1,5 @@
 "use client";
-import { motion, AnimatePresence } from 'framer-motion';
+
 import { User, Gender } from '@/lib/types/user';
 import { useUser } from '@clerk/nextjs';
 import React, { useEffect, useState } from 'react';
@@ -9,80 +9,72 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { TransitionCard, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';;
-import Loading from './loading';
+import { TransitionCard, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import Loading from './loading'; // Import the Loading component
 
 export default function UserProfileUpdate() {
-	const { user, isLoaded } = useUser();
-	const [userData, setUserData] = useState<User | undefined>(undefined);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [fetching, setFetching] = useState<boolean>(false);
+  const { user, isLoaded } = useUser();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [fetching, setFetching] = useState<boolean>(false);
 
-	// State for input fields
-	const [preferredName, setPreferredName] = useState<string>('');
-	const [dateOfBirth, setDateOfBirth] = useState<string>('');
-	const [gender, setGender] = useState<Gender | ''>('');
+  // State for input fields
+  const [preferredName, setPreferredName] = useState<string>('');
+  const [dateOfBirth, setDateOfBirth] = useState<string>('');
+  const [gender, setGender] = useState<Gender | ''>('');
 
-	useEffect(() => {
-		if (!isLoaded || !user?.id) return;
-		async function fetchUser() {
-			setLoading(true);
-			try {
-				const res = await axios.get('/api/users', {
-				params: { id: user?.id },
-				});
-				const data: User = res.data;
-				setUserData(data);
-				console.log(data);
-				// Initialize input fields with fetched data
-				setPreferredName(data.preferredName || '');
-				setDateOfBirth(data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split('T')[0] : '');
-				setGender(data.gender || '');
-			} catch (e) {
-				console.error(e);
-				toast.error("Error fetching data :(");
-			} finally { 
-				setLoading(false);
-			}
-		}
+  useEffect(() => {
+    if (!isLoaded || !user?.id) return;
+    async function fetchUser() {
+      setLoading(true);
+      try {
+        const res = await axios.get('/api/users', {
+          params: { id: user?.id },
+        });
+        const data: User = res.data;
+        setPreferredName(data.preferredName || '');
+        setDateOfBirth(data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split('T')[0] : '');
+        setGender(data.gender || '');
+      } catch (e) {
+        console.error(e);
+        toast.error("Error fetching data :(");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUser();
+  }, [isLoaded, user?.id]);
 
-		fetchUser();
-	}, [isLoaded, user?.id]);
+  const handleUpdate = async () => {
+    try {
+      setFetching(true);
+      if (!user?.id) {
+        toast.error("User ID is missing.");
+        return;
+      }
+      await axios.patch('/api/users', {
+        data: {
+          id: user.id,
+          preferredName,
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
+          gender: gender || undefined,
+        }
+      });
+      toast.success("User updated successfully.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error updating user.");
+    } finally {
+      setFetching(false);
+    }
+  };
 
-	const handleUpdate = async () => {
-		try {
-			setFetching(true);
+  // Show loading state while data is being fetched
+  if (!isLoaded || loading) {
+	  return <Loading />;
+  }
 
-			if (!user?.id) {
-				toast.error("User ID is missing.");
-				return;
-			}
-			await axios.patch('/api/users', {
-				data: {
-					id: user.id,
-					preferredName,
-					dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
-					gender: gender || undefined,
-				}
-		});
-			toast.success("User updated successfully.");
-		} catch (error) {
-			console.error(error);
-			toast.error("Error updating user.");
-		} finally {
-			setFetching(false);
-		}
-	};
-
-	if (loading)
-		return <Loading />
-				
-	
-
-
-	return (
-
-		<TransitionCard className="w-full max-w-md mx-auto ">
+  return (
+<TransitionCard className="w-full max-w-md mx-auto ">
 			<CardHeader>
 				<CardTitle>Profile Information</CardTitle>
 			</CardHeader>
@@ -136,5 +128,5 @@ export default function UserProfileUpdate() {
 				</Button>
 			</CardFooter>
 		</TransitionCard>
-	);
+  );
 }
