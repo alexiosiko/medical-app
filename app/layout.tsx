@@ -6,6 +6,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Footer from "@/components/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { AnimatePresence } from "framer-motion";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const font = Montserrat({
 	weight: "400",

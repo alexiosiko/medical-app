@@ -11,6 +11,7 @@ import { Calendar } from '@/components/ui/calendar';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { LoadingSpinner } from '@/components/animations/loadingspinner';
 
 const BookingForm = () => {
   	const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());

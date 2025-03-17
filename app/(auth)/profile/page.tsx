@@ -10,6 +10,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function UserProfileUpdate() {
 	const { user, isLoaded } = useUser();
@@ -23,26 +24,25 @@ export default function UserProfileUpdate() {
 
 	useEffect(() => {
 		if (!isLoaded || !user?.id) return;
-
 		async function fetchUser() {
-		setLoading(true);
-		try {
-			const res = await axios.get('/api/users', {
-			params: { id: user?.id },
-			});
-			const data: User = res.data;
-			setUserData(data);
-			console.log(data);
-			// Initialize input fields with fetched data
-			setPreferredName(data.preferredName || '');
-			setDateOfBirth(data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split('T')[0] : '');
-			setGender(data.gender || '');
-		} catch (e) {
-			console.error(e);
-			toast.error("Error fetching data :(");
-		} finally { 
-			setLoading(false);
-		}
+			setLoading(true);
+			try {
+				const res = await axios.get('/api/users', {
+				params: { id: user?.id },
+				});
+				const data: User = res.data;
+				setUserData(data);
+				console.log(data);
+				// Initialize input fields with fetched data
+				setPreferredName(data.preferredName || '');
+				setDateOfBirth(data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split('T')[0] : '');
+				setGender(data.gender || '');
+			} catch (e) {
+				console.error(e);
+				toast.error("Error fetching data :(");
+			} finally { 
+				setLoading(false);
+			}
 		}
 
 		fetchUser();
@@ -68,13 +68,24 @@ export default function UserProfileUpdate() {
 		}
 	};
 
-	if (loading) {
-		return 		<Card className="max-w-md mx-auto">
-					<CardHeader>
-						<CardTitle>Getting profile data ...</CardTitle>
-					</CardHeader>
-					</Card>
-	}
+	if (loading) 
+		return <Card className='max-w-md mx-auto space-y-2'>
+			<CardHeader>
+				<Skeleton className='w-full h-12' />
+			</CardHeader>
+			<CardContent className='space-y-2'>
+				<Skeleton className='w-full h-6' />
+				<Skeleton className='w-full h-12' />
+				<Skeleton className='w-full h-6' />
+				<Skeleton className='w-full h-12' />
+				<Skeleton className='w-full h-6' />
+				<Skeleton className='w-full h-12' />
+			</CardContent>
+			<CardFooter>
+				<Skeleton className='w-24 h-12' />
+			</CardFooter>
+		</Card>
+	
 
 
 	return (
