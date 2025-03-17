@@ -3,29 +3,43 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion"
 
+interface CardProps extends HTMLMotionProps<"div"> {
+	className?: string;
+  }
+  
+const TransitionCard = React.forwardRef<HTMLDivElement, CardProps>(({ className, ...props }, ref) => (
+	<AnimatePresence>
+	  <motion.div
+	  	initial={{ opacity: 0 }}
+		exit={{ opacity: 0 }}
+		animate={{ opacity: 1 }}
+		ref={ref}
+		data-slot="card"
+		className={cn(
+		  "bg-card shadow-md text-card-foreground flex flex-col gap-6 rounded-xl py-6",
+		  className
+		)}
+		{...props}
+	  />
+	</AnimatePresence>
+  ));
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
-	<AnimatePresence>
-		<motion.div
-		initial={{ opacity: 0 }}
-		animate={{ opacity: 1 }}
-		exit={{ opacity: 0 }}
-		transition={{ duration: 0.5 }}
-		>
-			<div
-			data-slot="card"
-			className={cn(
-				"bg-card shadow-md text-card-foreground flex flex-col gap-6 rounded-xl  py-6",
-				className
-			)}
-			{...props}
-			/>
-		</motion.div>
-	</AnimatePresence>
+	<div
+	  data-slot="card"
+	  className={cn(
+		"bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+		className
+	  )}
+	  {...props}
+	/>
   )
 }
+  
+  TransitionCard.displayName = "TransitionCard";
+  
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -77,4 +91,4 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { TransitionCard, Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

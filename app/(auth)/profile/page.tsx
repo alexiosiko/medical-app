@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';;
+import { TransitionCard, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';;
 import Loading from './loading';
 
 export default function UserProfileUpdate() {
@@ -82,7 +82,7 @@ export default function UserProfileUpdate() {
 
 	return (
 
-		<Card className="w-full max-w-md mx-auto ">
+		<TransitionCard className="w-full max-w-md mx-auto ">
 			<CardHeader>
 				<CardTitle>Profile Information</CardTitle>
 			</CardHeader>
@@ -135,6 +135,6 @@ export default function UserProfileUpdate() {
 					Update
 				</Button>
 			</CardFooter>
-		</Card>
+		</TransitionCard>
 	);
 }

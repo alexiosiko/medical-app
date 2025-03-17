@@ -1,15 +1,15 @@
 "use client"
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import { TransitionCard, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';
 
 export default function Loading() {
   return (
-        <Card className='w-full max-w-md mx-auto'>
+        <TransitionCard className='w-full max-w-md mx-auto'>
           <CardHeader>
-            <Skeleton className='w-full h-12' />
+			<Skeleton className='w-full h-12' />
           </CardHeader>
           <CardContent>
             <div className='space-y-2'>
@@ -24,7 +24,7 @@ export default function Loading() {
           <CardFooter>
             <Skeleton className='w-24 h-12' />
           </CardFooter>
-        </Card>
+        </TransitionCard>
 
   );
 }

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface TransitionLinkProps extends LinkProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   href: string;
   className?: string;
   searchParams?: Promise<any>;
@@ -38,6 +38,7 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
 		onClick();
     const main = document.querySelector('main');
     main?.classList.add('page-transition');
+	await sleep(100);
     router.push(href);
   };
 

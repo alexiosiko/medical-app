@@ -2,14 +2,14 @@
 
 import { TransitionLink } from '@/components/animations/transitionlink';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { TransitionCard, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function page() {
 	const router = useRouter();
   return (
-	<Card className='max-w-lg mx-auto'>
+	<TransitionCard className='max-w-lg mx-auto'>
 		<CardHeader>
 			<CardTitle>Successfully requested appointment!</CardTitle>
 		</CardHeader>
@@ -21,6 +21,6 @@ export default function page() {
 		 	<TransitionLink href='/'><Button variant="secondary" >Go Home</Button></TransitionLink>	
 		 	<TransitionLink href='/manage/appointments'><Button>Manage Appointments</Button></TransitionLink>	
 		</CardFooter>
-	</Card>
+	</TransitionCard>
   )
 }

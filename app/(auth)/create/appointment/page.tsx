@@ -6,13 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { TransitionCard, CardContent } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { LoadingSpinner } from '@/components/animations/loadingspinner';
-
+import handleTransition from '@/lib/transition'
 const BookingForm = () => {
   	const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 	const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
@@ -53,11 +52,10 @@ const BookingForm = () => {
 
 			toast.success('Booking submitted successfully');
 
-			router.push('/create/appointment/success')
-			// Reset params
+			handleTransition(router, '/create/appointment/success');
 		} catch (error) {
-		  toast.error('Error submitting booking');
-		} finally {
+			console.error(error);
+			toast.error('Error submitting booking');
 			setUploading(false);
 		}
 	  };
@@ -66,7 +64,7 @@ const BookingForm = () => {
   const timeSlots = Array.from({ length: 9 }, (_, i) => `${8 + i}:00`);
 
   return (
-    <Card className='max-w-lg mx-auto'>
+    <TransitionCard className='max-w-lg mx-auto'>
       <CardContent className='items-center flex flex-col place-justify-center'>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -134,7 +132,7 @@ const BookingForm = () => {
           <Button disabled={uploading} type="submit">Submit Booking</Button>
         </form>
       </CardContent>
-    </Card>
+    </TransitionCard>
   );
 };
 

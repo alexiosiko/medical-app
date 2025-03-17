@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { TransitionCard, CardContent, CardHeader, CardTitle, Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TransitionLink } from '@/components/animations/transitionlink';
@@ -22,6 +22,8 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { Appointment } from '@/lib/types/appointments';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
+import Loading from './loading';
+import TransitionDiv from '@/components/animations/transitiondiv';
 
 
 export default function AppointmentsPage() {
@@ -114,33 +116,13 @@ export default function AppointmentsPage() {
   };
   
 
-  if (!isLoaded || loading) {
-    return (
-      <div className="p-4 space-y-4">
-        <Skeleton className="h-8 w-[200px]" />
-        <div className="space-y-2">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-16 w-full" />
-          ))}
-        </div>
-      </div>
-    );
-  }
+  if (loading)
+    return <Loading />
 
-  if (!userId) {
-    return (
-      <div className="p-4 text-center">
-        <h2 className="text-xl font-semibold mb-4">Please sign in to view appointments</h2>
-        <TransitionLink href="/sign-in">
-          <Button>Sign In</Button>
-        </TransitionLink>
-      </div>
-    );
-  }
 
   return (
-    <div className="md:p-4 ">
-      <div className="flex max-md:flex-col space-y-2 justify-between items-center">
+    <TransitionDiv className="md:p-4 max-w-lg mx-auto">
+      <div className="flex max-md:flex-col justify-between items-center">
         <h1 className="text-2xl font-bold">My Appointments</h1>
         <TransitionLink href="/create/appointment">
           <Button>New Appointment</Button>
@@ -163,55 +145,55 @@ export default function AppointmentsPage() {
 				className='mb-4'
 				>
 				<Card key={appointment._id}>
-				<CardContent className="p-4 flex justify-between items-center">
-					<div className="flex-1">
-					<h3 className="font-semibold">
-						{new Date(appointment.date).toLocaleDateString()} - {appointment.time}
-					</h3>
-					<p className="text-gray-600">{appointment.description}</p>
-					<p className="text-sm text-gray-500">
-						Method: {appointment.communicationMethod}
-					</p>
-					{appointment.fileName && (
-						<p onClick={() => handleDownload(appointment)} className="text-sm text-blue-600">
-						Document: {appointment.fileName}
-						
+					<CardContent className="p-4 flex justify-between items-center">
+						<div className="flex-1">
+						<h3 className="font-semibold">
+							{new Date(appointment.date).toLocaleDateString()} - {appointment.time}
+						</h3>
+						<p className="text-gray-600">{appointment.description}</p>
+						<p className="text-sm text-gray-500">
+							Method: {appointment.communicationMethod}
 						</p>
-					)}
-					</div>
-					
-					<AlertDialog>
-					<AlertDialogTrigger asChild >
-						<Button 
-						variant="destructive" 
-						disabled={deletingId === appointment._id}
-						>
-						{deletingId === appointment._id ? 'Cancelling...' : 'Cancel'}
-						</Button>
-					</AlertDialogTrigger>
-					<AlertDialogContent>
-						<AlertDialogHeader>
-						<AlertDialogTitle>Confirm Cancellation</AlertDialogTitle>
-						<AlertDialogDescription>
-							Are you sure you want to cancel this appointment? This action cannot be undone.
-						</AlertDialogDescription>
-						</AlertDialogHeader>
-						<AlertDialogFooter>
-						<AlertDialogCancel>Back</AlertDialogCancel>
-						<AlertDialogAction
-							onClick={() => handleDelete(appointment._id)}
-						>
-							Confirm Cancellation
-						</AlertDialogAction>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-					</AlertDialog>
-				</CardContent>
+						{appointment.fileName && (
+							<p onClick={() => handleDownload(appointment)} className="text-sm text-blue-600">
+							Document: {appointment.fileName}
+							
+							</p>
+						)}
+						</div>
+						
+						<AlertDialog>
+						<AlertDialogTrigger asChild >
+							<Button 
+							variant="destructive" 
+							disabled={deletingId === appointment._id}
+							>
+							{deletingId === appointment._id ? 'Cancelling...' : 'Cancel'}
+							</Button>
+						</AlertDialogTrigger>
+						<AlertDialogContent>
+							<AlertDialogHeader>
+							<AlertDialogTitle>Confirm Cancellation</AlertDialogTitle>
+							<AlertDialogDescription>
+								Are you sure you want to cancel this appointment? This action cannot be undone.
+							</AlertDialogDescription>
+							</AlertDialogHeader>
+							<AlertDialogFooter>
+							<AlertDialogCancel>Back</AlertDialogCancel>
+							<AlertDialogAction
+								onClick={() => handleDelete(appointment._id)}
+							>
+								Confirm Cancellation
+							</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+						</AlertDialog>
+					</CardContent>
 				</Card>
 			</motion.div>
           ))}
         </AnimatePresence>
       )}
-    </div>
+    </TransitionDiv>
   );
 }

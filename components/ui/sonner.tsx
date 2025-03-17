@@ -5,11 +5,10 @@ import { Toaster as Sonner, ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
-
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
-	  position="top-center"
+	  position="bottom-center"
       className="toaster group "
 		richColors
 

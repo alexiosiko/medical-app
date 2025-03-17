@@ -1,6 +1,6 @@
 import LeftRight from '@/components/leftright'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { TransitionCard, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import ColorBanner from '@/components/ui/colorbanner'
 import Image from 'next/image'
 import React from 'react'
@@ -13,6 +13,7 @@ import {
   } from "@/components/ui/accordion"
 import Animate from '@/components/animations/animate'
 import { TransitionLink } from '@/components/animations/transitionlink'
+import TransitionDiv from '@/components/animations/transitiondiv'
 
   
 
@@ -21,7 +22,7 @@ export default function Page() {
 	<div>
 		<h1 className='text-center'>Victoria, this IS the sample.</h1>
 		<LeftRight>
-			<Animate className='md:w-[55%] md:my-36 max-md:my-16'>
+			<div className='md:w-[55%] md:my-36 max-md:my-16'>
 				<div className='flex flex-col gap-4 max-md:text-center '>
 					<CardTitle className='text-4xl font-extrabold'>Virtual care solutions for organizations</CardTitle>
 					<CardDescription>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</CardDescription>
@@ -30,16 +31,16 @@ export default function Page() {
 						<Button className='w-min' variant="secondary">Learn More</Button>
 					</div>
 				</div>
-			</Animate>
-			<Animate>
+			</div>
+			<div>
 				<Image loading='eager' src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
-			</Animate>
+			</div>
 
 		</LeftRight>
 
 		<div className='md:grid grid-cols-3 gap-24 my-24'>
 			{homelearnmoredata.map((data, index) => 
-				<Card key={index} className='relative px-0 mx-0'>
+				<TransitionCard key={index} className='relative px-0 mx-0'>
 					<CardHeader >
 						<CardTitle>
 							{data.title}
@@ -54,7 +55,7 @@ export default function Page() {
 						<Image className='rounded-md object-fit bottom-4  self-end' src={data.href} width={450} height={450} alt='image.png' />
 						
 					</CardContent>
-				</Card>
+				</TransitionCard>
 			)}
 		</div>
 
@@ -65,12 +66,12 @@ export default function Page() {
 			</CardTitle>
 			<div className='max-m:grid grid-cols-3 gap-12 '>
 					{yearsexperiencesidebannerdata.map((data, index) => (
-				<Card key={index} className="flex bg-primary text-background border-none flex-col gap-4">
+				<TransitionCard key={index} className="flex bg-primary text-background border-none flex-col gap-4">
 					<CardHeader>
 					<CardTitle>{data.title}</CardTitle>
 					</CardHeader>
 					<CardContent>{data.description}</CardContent>
-				</Card>
+				</TransitionCard>
 				))}
 			</div>
 
