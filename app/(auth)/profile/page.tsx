@@ -1,21 +1,22 @@
 "use client";
-
+import { motion, AnimatePresence } from 'framer-motion';
 import { User, Gender } from '@/lib/types/user';
 import { useUser } from '@clerk/nextjs';
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';;
+import Loading from './loading';
 
 export default function UserProfileUpdate() {
 	const { user, isLoaded } = useUser();
 	const [userData, setUserData] = useState<User | undefined>(undefined);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [fetching, setFetching] = useState<boolean>(false);
 
 	// State for input fields
 	const [preferredName, setPreferredName] = useState<string>('');
@@ -47,49 +48,41 @@ export default function UserProfileUpdate() {
 
 		fetchUser();
 	}, [isLoaded, user?.id]);
+
 	const handleUpdate = async () => {
-		if (!user?.id) {
-		toast.error("User ID is missing.");
-		return;
-		}
 		try {
-		await axios.patch('/api/users', {
-			data: {
-				id: user.id,
-				preferredName,
-				dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
-				gender: gender || undefined,
+			setFetching(true);
+
+			if (!user?.id) {
+				toast.error("User ID is missing.");
+				return;
 			}
+			await axios.patch('/api/users', {
+				data: {
+					id: user.id,
+					preferredName,
+					dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
+					gender: gender || undefined,
+				}
 		});
-		toast.success("User updated successfully.");
+			toast.success("User updated successfully.");
 		} catch (error) {
-		console.error(error);
-		toast.error("Error updating user.");
+			console.error(error);
+			toast.error("Error updating user.");
+		} finally {
+			setFetching(false);
 		}
 	};
 
-	if (loading) 
-		return <Card className='max-w-md mx-auto space-y-2'>
-			<CardHeader>
-				<Skeleton className='w-full h-12' />
-			</CardHeader>
-			<CardContent className='space-y-2'>
-				<Skeleton className='w-full h-6' />
-				<Skeleton className='w-full h-12' />
-				<Skeleton className='w-full h-6' />
-				<Skeleton className='w-full h-12' />
-				<Skeleton className='w-full h-6' />
-				<Skeleton className='w-full h-12' />
-			</CardContent>
-			<CardFooter>
-				<Skeleton className='w-24 h-12' />
-			</CardFooter>
-		</Card>
+	if (loading)
+		return <Loading />
+				
 	
 
 
 	return (
-		<Card className="max-w-md mx-auto">
+
+		<Card className="w-full max-w-md mx-auto ">
 			<CardHeader>
 				<CardTitle>Profile Information</CardTitle>
 			</CardHeader>
@@ -138,7 +131,7 @@ export default function UserProfileUpdate() {
 				</div>
 			</CardContent>
 			<CardFooter>
-					<Button onClick={handleUpdate} className="mt-4">
+					<Button disabled={fetching} onClick={handleUpdate} className="mt-4">
 					Update
 				</Button>
 			</CardFooter>

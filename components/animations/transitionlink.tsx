@@ -34,14 +34,15 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
 
   const handleTransition = async (e: any) => {
     e.preventDefault();
+    if (onClick) 
+		onClick();
     const main = document.querySelector('main');
     main?.classList.add('page-transition');
-    if (onClick) onClick();
     router.push(href);
   };
 
   return (
-    <Link className={className} {...props} href={href} onClick={handleTransition}>
+    <Link className={`${className} p-3`} {...props} href={href} onClick={handleTransition}>
       {children}
     </Link>
   );

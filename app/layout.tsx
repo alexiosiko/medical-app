@@ -5,9 +5,6 @@ import NavBar from "@/components/nav/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import Footer from "@/components/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
-import { AnimatePresence } from "framer-motion";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const font = Montserrat({
 	weight: "400",
@@ -33,8 +30,8 @@ export default function RootLayout({
 					<header className="mb-32 ">
 						<NavBar />
 					</header>
-					<main className="max-w-7xl mx-auto px-2 min-h-screen flex flex-col">
-						<div className="flex-grow">
+					<main className="max-w-7xl page-transition min-h-screen mx-auto px-2 flex flex-col">
+						<div className="grow">
 							{children}
 						</div>
 						<Footer />

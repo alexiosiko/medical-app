@@ -1,17 +1,29 @@
+"use client"
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { motion, AnimatePresence } from 'framer-motion';
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      data-slot="card"
-      className={cn(
-        "bg-card shadow-md text-card-foreground flex flex-col gap-6 rounded-xl  py-6",
-        className
-      )}
-      {...props}
-    />
+	<AnimatePresence>
+		<motion.div
+		initial={{ opacity: 0 }}
+		animate={{ opacity: 1 }}
+		exit={{ opacity: 0 }}
+		transition={{ duration: 0.5 }}
+		>
+			<div
+			data-slot="card"
+			className={cn(
+				"bg-card shadow-md text-card-foreground flex flex-col gap-6 rounded-xl  py-6",
+				className
+			)}
+			{...props}
+			/>
+		</motion.div>
+	</AnimatePresence>
   )
 }
 
@@ -49,7 +61,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-content"
-      className={cn("md:px-6 max-md:items-center max-md:text-center", className)}
+      className={cn("md:px-6 max-md:px-2 max-md:items-center max-md:text-center", className)}
       {...props}
     />
   )

@@ -58,11 +58,11 @@ return (
 		<NavigationMenuItem>
 		<NavigationMenuTrigger>Appointments</NavigationMenuTrigger>
 			<NavigationMenuContent className="flex flex-col w-96">
-				<TransitionLink href='/create/appointment' className="hover:bg-accent p-2 rounded-sm">
+				<TransitionLink href='/create/appointment' className="hover:bg-accent rounded-sm">
 					<CardTitle className='text-md'>Book Appointment</CardTitle>
 					<CardDescription>Book a time and a place to get started!</CardDescription>
 				</TransitionLink>
-				<TransitionLink href='/manage/appointments' className="hover:bg-accent p-2 rounded-sm">
+				<TransitionLink href='/manage/appointments' className="hover:bg-accent rounded-sm">
 					<CardTitle className='text-md'>Manage</CardTitle>
 					<CardDescription>Manage your appointments</CardDescription>
 				</TransitionLink>

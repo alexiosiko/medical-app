@@ -25,21 +25,20 @@ export default function Animate({
 	useEffect(() => {
 		if (playOnAwake && window.innerWidth > maxWidth) 
 		{
-			animate(scope.current, { y: 0, opacity: 1 }, { delay });
-			console.log("mobile");
+			// animate(scope.current, { y: 0, opacity: 1 }, { delay });
 		}
 	}, [])
 
 	
 	return (
-		<motion.div
+		<div
 			// id={id}
 			className={className}
-			ref={scope}
+			// ref={scope}
 			// initial={initial}
 			// onViewportEnter={() => animate(scope.current, { y: 0, x: 0, opacity: 100}, { delay: delay})}
 		>
 			{children}
-		</motion.div>
+		</div>
 	)
 }

@@ -2,7 +2,6 @@ import LeftRight from '@/components/leftright'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import ColorBanner from '@/components/ui/colorbanner'
-import SubHeader from '@/components/ui/subheader'
 import Image from 'next/image'
 import React from 'react'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
@@ -40,24 +39,22 @@ export default function Page() {
 
 		<div className='md:grid grid-cols-3 gap-24 my-24'>
 			{homelearnmoredata.map((data, index) => 
-				<Animate delay={index / 10 + 0.5} key={index}>
-					<Card className='relative px-0 mx-0'>
-						<CardHeader >
-							<CardTitle>
-								{data.title}
-							</CardTitle>
-						</CardHeader>
-						<CardContent className='flex flex-col'>
-							<p>{data.description}</p>
-							<Button variant="link" className='-ml-3 w-min'>
-								<FaArrowAltCircleRight size={48}/>
-								Learn More
-							</Button>
-							<Image className='rounded-md object-fit bottom-4  self-end' src={data.href} width={450} height={450} alt='image.png' />
-							
-						</CardContent>
-					</Card>
-				</Animate>
+				<Card key={index} className='relative px-0 mx-0'>
+					<CardHeader >
+						<CardTitle>
+							{data.title}
+						</CardTitle>
+					</CardHeader>
+					<CardContent className='flex flex-col'>
+						<p>{data.description}</p>
+						<Button variant="link" className='-ml-3 w-min'>
+							<FaArrowAltCircleRight size={48}/>
+							Learn More
+						</Button>
+						<Image className='rounded-md object-fit bottom-4  self-end' src={data.href} width={450} height={450} alt='image.png' />
+						
+					</CardContent>
+				</Card>
 			)}
 		</div>
 
