@@ -18,25 +18,25 @@ export function Sidebar() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-3/4">
-          <SheetHeader>
-            <SheetTitle className="text-center">Navigation</SheetTitle>
-          </SheetHeader>
-          <div className="flex flex-col items-center gap-4">
-			
-            <TransitionLink href="/" onClick={() => setOpen(false)}>Home</TransitionLink>
-			
-			<CardTitle className="mt-8">Account</CardTitle>
-            <TransitionLink href="/profile" onClick={() => setOpen(false)}>Profile</TransitionLink>
-			<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Documents</TransitionLink>
-			<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Emergency Contacts</TransitionLink>
-			<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Billing</TransitionLink>
-			
-			<CardTitle className="mt-8">Appointments</CardTitle>
-            <TransitionLink href="/manage/appointments" onClick={() => setOpen(false)}>Manage</TransitionLink>
-			<TransitionLink href="/create/appointment" onClick={() => setOpen(false)}>Create</TransitionLink>
-			
-          </div>
-        </SheetContent>
+			<SheetHeader>
+				<SheetTitle className="text-center">Navigation</SheetTitle>
+			</SheetHeader>
+				<div className="flex flex-col items-center">
+					
+						<TransitionLink href="/" onClick={() => setOpen(false)}>Home</TransitionLink>
+						
+						<CardTitle className="mt-8">Account</CardTitle>
+						<TransitionLink href="/profile" onClick={() => setOpen(false)}>Profile</TransitionLink>
+						<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Documents</TransitionLink>
+						<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Emergency Contacts</TransitionLink>
+						<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Billing</TransitionLink>
+						
+						<CardTitle className="mt-8">Appointments</CardTitle>
+						<TransitionLink href="/manage/appointments" onClick={() => setOpen(false)}>Manage</TransitionLink>
+						<TransitionLink href="/create/appointment" onClick={() => setOpen(false)}>Create</TransitionLink>
+					
+				</div>
+			</SheetContent>
       </Sheet>
   )
 }

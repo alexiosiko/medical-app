@@ -1,4 +1,7 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
+
+const isAdminRoute = createRouteMatcher(['/admin(.*)']);
 
 const isProtectedRoute = createRouteMatcher([
 	'/create/appointment',
@@ -7,9 +10,22 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-	await auth.protect();
-  }
+	const deniedUrl = new URL('/denied', req.url);
+	if (isProtectedRoute(req))
+		await auth.protect();
+	
+	if (isAdminRoute(req)) {
+		const userId = (await auth()).userId;
+		if (!userId)
+			return NextResponse.redirect(deniedUrl);
+
+		const metadata = (await (await clerkClient()).users.getUser(userId)).publicMetadata;
+		if (metadata.role == "admin")
+			return NextResponse.next();
+		else
+			return NextResponse.redirect(deniedUrl);
+	}
+
 });
 
 export const config = {

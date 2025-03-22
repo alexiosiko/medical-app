@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dbPromise } from '@/lib/mongodb';
-import { AppointmentWithout_id } from '@/lib/types/appointments';
 import { auth } from '@clerk/nextjs/server';
+import { IAppointment } from '@/lib/models/appointment';
+import { ObjectId } from 'mongodb';
 
 export const config = {
   api: {
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
     }
 
 		// Create appointment data
-		const appointmentData: AppointmentWithout_id = {
+		const appointmentData: IAppointment = {
 			communicationMethod: communicationMethod as 'chat' | 'video' | 'in-person',
 			date,
 			description,
@@ -72,32 +73,41 @@ export async function POST(req: NextRequest) {
 			document: documentBuffer,
 			fileName,
 			fileType,
-		
 			createdBy: userId,
 			createdAt: new Date(),
+			approvalStatus: 'pending',
 		};
 
 		const db = await dbPromise();
 		await db.collection('appointments').insertOne(appointmentData);
 		return NextResponse.json({ message: 'Appointment created successfully' });
 	} catch (error: any) {
+		console.error(error);
 		console.error(error.message);
 		return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
 	}
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
-		const {userId} = await auth();
-		if (!userId)
-			return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+
+		const searchParams = request.nextUrl.searchParams;
+		const getAll = searchParams.get('get_all');
+		let appointments;
 		const db = await dbPromise();
-		const appointments = await db.collection('appointments').find({ createdBy: userId }).toArray();
+		if (getAll) {
+			appointments = await db.collection('appointments').find({}).toArray();
+		} else {
+			const {userId} = await auth();
+			if (!userId)
+				return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+			appointments = await db.collection('appointments').find({ createdBy: userId }).toArray();
+		}
 		return NextResponse.json(appointments);
 		
 	} catch (error: any) {
 		console.error(error.message);
-		return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
+		return NextResponse.json({ message: error.message }, { status: 500 });
 	}
 }
 

@@ -1,4 +1,3 @@
-// app/dashboard/appointments/page.tsx
 "use client";
 
 import { useLayoutEffect, useState } from 'react';
@@ -19,15 +18,16 @@ import {
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { Appointment } from '@/lib/types/appointments';
 import { AnimatePresence, motion } from 'framer-motion';
 import Loading from './loading';
 import TransitionDiv from '@/components/animations/transitiondiv';
+import { IAppointment } from '@/lib/models/appointment';
+import { formatDate } from '@/lib/time';
 
 
 export default function AppointmentsPage() {
 	const { userId, isLoaded } = useAuth();
-	const [ appointments, setAppointments] = useState<Appointment[]>([]);
+	const [ appointments, setAppointments] = useState<IAppointment[]>([]);
 	const [ loading, setLoading] = useState(true);
 	const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -49,12 +49,14 @@ export default function AppointmentsPage() {
 		}
 	};
 
-	const handleDelete = async (appointmentId: string) => {
+	const handleDelete = async (appointment_id: string | undefined) => {
 		try {
-			setDeletingId(appointmentId);
+			if (!appointment_id)
+				throw Error("ObjectId is null?")
+			setDeletingId(appointment_id);
 			const response = await axios.delete('/api/appointments', {
 				params: {
-					_id: appointmentId
+					_id: appointment_id
 				}
 			})
 
@@ -62,7 +64,7 @@ export default function AppointmentsPage() {
 			if (response.status != 200) 
 				throw Error('Failed to cancel appointment');
 
-			setAppointments(prev => prev.filter(a => a._id !== appointmentId));
+			setAppointments(prev => prev.filter(a => a._id?.toString() !== appointment_id));
 			toast.success('Appointment cancelled successfully');
 			} catch (error: any) {
 				console.log(error);
@@ -72,7 +74,7 @@ export default function AppointmentsPage() {
 			}
 	};
 
-	const handleDownload = (appointment: Appointment) => {
+	const handleDownload = (appointment: IAppointment) => {
 		try {
 			if (!appointment.fileName || !appointment || !appointment.document) 
 				return;
@@ -111,20 +113,19 @@ export default function AppointmentsPage() {
 			toast.error('Failed to download document');
 			}
 	};
-  
-	console.log(loading);
+
 	if (loading)
 		return <Loading />
 
 
 	return (
 		<TransitionDiv className="md:p-4 max-w-lg mx-auto">
-		<div className="flex max-md:flex-col justify-between items-center">
-			<h1 className="text-2xl font-bold">My Appointments</h1>
-			<TransitionLink href="/create/appointment">
-			<Button>New Appointment</Button>
-			</TransitionLink>
-		</div>
+			<div className="flex max-md:flex-col justify-between items-center">
+				<h1 className="text-2xl font-bold">My Appointments</h1>
+				<TransitionLink href="/create/appointment">
+				<Button>New Appointment</Button>
+				</TransitionLink>
+			</div>
 
 		{appointments.length === 0 ? (
 			<div className="text-center text-gray-500">
@@ -137,11 +138,11 @@ export default function AppointmentsPage() {
 					layout="position"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					key={appointment._id}
+					key={appointment._id?.toString()}
 					exit={{ opacity: 0, x: 500 }}
 					className='mb-4'
 					>
-					<Card key={appointment._id}>
+					<Card>
 						<CardContent className=" flex justify-between items-center">
 							<div>
 								<h3 className="font-semibold">
@@ -153,19 +154,38 @@ export default function AppointmentsPage() {
 								</p>
 								{appointment.fileName && (
 									<p onClick={() => handleDownload(appointment)} className="text-sm text-blue-600">
-									Document: {appointment.fileName}
-									
+										Document: {appointment.fileName}
 									</p>
 								)}
+								<p>
+									Created at: {formatDate(appointment.createdAt)}
+								</p>
+								{appointment.approvalStatus == 'approved' ?
+								<>	
+									<p>
+										Status: {appointment.approvalStatus}
+									</p>
+									<p>
+										Approved at: {formatDate(appointment.approvedAt)}
+									</p>
+
+									<p>
+										Approved by: {appointment.approvedBy}
+									</p>
+								</> 
+								: <p>
+									Status: {appointment.approvalStatus}
+								</p>
+								}
 							</div>
 							
 							<AlertDialog>
 							<AlertDialogTrigger asChild >
 								<Button 
 								variant="destructive" 
-								disabled={deletingId === appointment._id}
+								disabled={deletingId === appointment._id?.toString()}
 								>
-								{deletingId === appointment._id ? 'Cancelling...' : 'Cancel'}
+								{deletingId === appointment._id?.toString() ? 'Cancelling...' : 'Cancel'}
 								</Button>
 							</AlertDialogTrigger>
 							<AlertDialogContent>
@@ -178,7 +198,7 @@ export default function AppointmentsPage() {
 								<AlertDialogFooter>
 								<AlertDialogCancel>Back</AlertDialogCancel>
 								<AlertDialogAction
-									onClick={() => handleDelete(appointment._id)}
+									onClick={() => handleDelete(appointment._id?.toString())}
 								>
 									Confirm Cancellation
 								</AlertDialogAction>

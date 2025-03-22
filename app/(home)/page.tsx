@@ -23,10 +23,10 @@ export default function Page() {
 		<h1 className='text-center'>Victoria, this IS the sample.</h1>
 		<LeftRight>
 			<div className='md:w-[55%] md:my-36 max-md:my-16'>
-				<div className='flex flex-col gap-4 max-md:text-center '>
+				<div className='flex flex-col max-md:text-center '>
 					<CardTitle className='text-4xl font-extrabold'>Virtual care solutions for organizations</CardTitle>
 					<CardDescription>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</CardDescription>
-					<div className='flex gap-4 max-md:justify-center'>
+					<div className='flex gap-4 max-md:justify-center items-center'>
 						<TransitionLink href="/create/appointment"><Button className='w-min'>Book Now</Button></TransitionLink>
 						<Button className='w-min' variant="secondary">Learn More</Button>
 					</div>
