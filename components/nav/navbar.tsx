@@ -26,7 +26,7 @@ import { TransitionLink } from '../animations/transitionlink'
 export default function NavBar() {
   return (
 		<div
-			className='grid grid-cols-3 h-24 bg-background z-10 rounded-3xl fixed w-[95%] max-w-7xl md:top-16 max-md:top-9 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+			className='grid grid-cols-3 h-24 bg-background z-10 rounded-3xl fixed w-[95%] max-w-7xl md:top-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2
 			shadow-lg items-center place-items-center'
 			>
 			<DropDownMenu />
