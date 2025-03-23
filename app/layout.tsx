@@ -39,10 +39,10 @@ export default function RootLayout({
 						<div className="grow  mx-2">
 							{children}
 						</div>
-						<Footer />
 					</main>
-
+					<Footer />
 					<Toaster
+
 						closeButton
 						richColors
 						theme="light"
