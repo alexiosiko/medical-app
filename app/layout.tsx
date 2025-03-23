@@ -35,7 +35,7 @@ export default function RootLayout({
 					<header className="mb-32">
 						<NavBar />
 					</header>
-					<main className="max-w-7xl page-transition min-h-screen flex flex-col">
+					<main className="max-w-7xl mx-auto page-transition min-h-screen flex flex-col">
 						<div className="grow  mx-2">
 							{children}
 						</div>
