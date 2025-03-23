@@ -131,9 +131,9 @@ export default function Page() {
 					{yearsexperiencesidebannerdata.map((data, index) => (
 				<TransitionCard key={index} className="flex bg-white flex-col gap-4">
 					<CardHeader>
-						<CardTitle>{data.title}</CardTitle>
+						<CardTitle className='max-md:text-center'>{data.title}</CardTitle>
 					</CardHeader>
-					<CardContent>
+					<CardContent className='max-md:text-center'>
 						<h1 className='text-2lg! mb-4'>Title {index}</h1>
 						{data.description}
 					</CardContent>
