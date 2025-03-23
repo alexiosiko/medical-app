@@ -3,7 +3,7 @@ import ColorBanner from '../ui/colorbanner';
 
 export default function Footer() {
   return (
-    <footer className="py-8 max-md:text-center mt-24 text-primary-foreground relative">
+    <footer className="py-8 max-md:text-center mt-24 text-primary relative">
 		<ColorBanner />
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-between">
@@ -18,20 +18,20 @@ export default function Footer() {
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
             <h5 className="font-bold mb-2">Helpful Links</h5>
             <ul>
-              <li><a href="/about" className="text-gray-400 hover:text-white">About Us</a></li>
-              <li><a href="/services" className="text-gray-400 hover:text-white">Services</a></li>
-              <li><a href="/contact" className="text-gray-400 hover:text-white">Contact</a></li>
-              <li><a href="/faq" className="text-gray-400 hover:text-white">FAQ</a></li>
+              <li><a href="/about" className="hover:text-white">About Us</a></li>
+              <li><a href="/services" className="hover:text-white">Services</a></li>
+              <li><a href="/contact" className="hover:text-white">Contact</a></li>
+              <li><a href="/faq" className="hover:text-white">FAQ</a></li>
             </ul>
           </div>
           {/* Social Media Links */}
           <div className="w-full md:w-1/3">
             <h5 className="font-bold mb-2">Follow Us</h5>
             <ul className="flex space-x-4">
-              <li><a href="https://www.facebook.com" className="text-gray-400 hover:text-white">Facebook</a></li>
-              <li><a href="https://www.twitter.com" className="text-gray-400 hover:text-white">Twitter</a></li>
-              <li><a href="https://www.instagram.com" className="text-gray-400 hover:text-white">Instagram</a></li>
-              <li><a href="https://www.linkedin.com" className="text-gray-400 hover:text-white">LinkedIn</a></li>
+              <li><a href="https://www.facebook.com" className="hover:text-white">Facebook</a></li>
+              <li><a href="https://www.twitter.com" className="hover:text-white">Twitter</a></li>
+              <li><a href="https://www.instagram.com" className="hover:text-white">Instagram</a></li>
+              <li><a href="https://www.linkedin.com" className="hover:text-white">LinkedIn</a></li>
             </ul>
           </div>
         </div>

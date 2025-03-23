@@ -104,7 +104,7 @@ export default function UserProfileUpdate() {
   return (
     <TransitionCard className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Profile Information</CardTitle>
+        <CardTitle className='text-center'>Profile Information</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

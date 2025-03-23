@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { CardContent, Card } from '@/components/ui/card';
+import { CardContent, Card, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TransitionLink } from '@/components/animations/transitionlink';
 import {
@@ -121,7 +121,7 @@ export default function AppointmentsPage() {
 	return (
 		<TransitionDiv className="md:p-4 max-w-lg mx-auto">
 			<div className="flex max-md:flex-col justify-between items-center">
-				<h1 className="text-2xl font-bold">My Appointments</h1>
+				<CardTitle className="">My Appointments</CardTitle>
 				<TransitionLink href="/create/appointment">
 				<Button>New Appointment</Button>
 				</TransitionLink>

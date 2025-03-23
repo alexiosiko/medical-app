@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
-import { TransitionCard, CardContent } from '@/components/ui/card';
+import { TransitionCard, CardContent, CardTitle, CardHeader } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -65,7 +65,14 @@ const BookingForm = () => {
 
   return (
     <TransitionCard className='max-w-lg mx-auto'>
-      <CardContent className='items-center flex flex-col place-justify-center'>
+		<CardHeader>
+
+		<CardTitle>
+			Book Appointment
+		</CardTitle>
+		</CardHeader>
+      <CardContent className=''>
+	
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="date">Date</Label>
@@ -73,7 +80,7 @@ const BookingForm = () => {
               mode="single"
               selected={selectedDate}
               onSelect={setSelectedDate}
-              className="rounded-md border mx-auto flex justify-center"
+              className="rounded-md border  flex justify-center"
             />
           </div>
           <div>

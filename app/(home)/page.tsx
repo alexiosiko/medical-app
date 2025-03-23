@@ -1,106 +1,140 @@
 import LeftRight from '@/components/leftright'
 import { Button } from '@/components/ui/button'
-import { TransitionCard, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { TransitionCard, CardContent, CardDescription, CardHeader, CardTitle, Card, CardFooter } from '@/components/ui/card'
 import ColorBanner from '@/components/ui/colorbanner'
 import Image from 'next/image'
 import React from 'react'
-import { FaArrowAltCircleRight } from 'react-icons/fa'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
   } from "@/components/ui/accordion"
-import Animate from '@/components/animations/animate'
+import Title from '@/components/ui/title'
 import { TransitionLink } from '@/components/animations/transitionlink'
-import TransitionDiv from '@/components/animations/transitiondiv'
+import { FaCircleArrowRight } from "react-icons/fa6";
 
   
 
 export default function Page() {
   return (
 	<div>
-		<h1 className='text-center'>Victoria, this IS the sample.</h1>
+		<p className='text-center'>Victoria, this IS the sample.</p>
 		<LeftRight>
-			<div className='md:w-[55%] md:my-36 max-md:my-16'>
-				<div className='flex flex-col max-md:text-center '>
-					<CardTitle className='text-4xl font-extrabold'>Virtual care solutions for organizations</CardTitle>
-					<CardDescription>Discover an integrated virtual care platform that offers comprehensive solutions for the diverse needs of your employees, members and providers.</CardDescription>
-					<div className='flex gap-4 max-md:justify-center items-center'>
-						<TransitionLink href="/create/appointment"><Button className='w-min'>Book Now</Button></TransitionLink>
-						<Button className='w-min' variant="secondary">Learn More</Button>
-					</div>
+			<div className='md:w-[60%] md:my-36 max-md:my-1 '>
+				<h1 className='text-5xl mb-10 ml-8'>AI research and products that put safety at frontier</h1>
+				<div className='md:grid md:grid-cols-2 md:space-x-8 space-y-8'>
+					<Card className='h-72'>
+						<CardHeader>
+							<CardTitle>Claude.ai</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<Title>Meet Claude 3.7 Sonnet
+							</Title>
+							<p>
+							Claude 3.7 Sonnet, our most intelligent AI model, is now available.
+							</p>
+						</CardContent>
+						<CardFooter>
+							<Button className='grow' >Book Now</Button>
+						</CardFooter>
+					</Card>
+					<Card className='h-72'>
+						<CardHeader>
+							<CardTitle>Claude.ai</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<Title>Meet Claude 3.7 Sonnet
+							</Title>
+							<p>
+							Meet Claude 3.7 Sonnet
+							Claude 3.7 Sonnet, our most intelligent AI model, is now available.
+							</p>
+						</CardContent>
+						<CardFooter>
+							<Button className='grow' variant="outline" >Book Now</Button>
+						</CardFooter>
+					</Card>
 				</div>
 			</div>
-			<div>
-				<Image loading='eager' src="/images/group.png" alt='group.png' className='w-full' height={600} width={600}/>
+			<div className='max-lg:hidden grow'> 
+				<Image loading='eager' src="/images/art/hands-and-heart.png" alt='group.png' className='w-full' height={600} width={600}/>
 			</div>
 
 		</LeftRight>
 
-		<div className='md:grid grid-cols-3 gap-24 my-24'>
-			{homelearnmoredata.map((data, index) => 
-				<TransitionCard key={index} className='relative px-0 mx-0'>
-					<CardHeader >
-						<CardTitle>
-							{data.title}
-						</CardTitle>
-					</CardHeader>
-					<CardContent className='flex flex-col'>
-						<p>{data.description}</p>
-						<Button variant="link" className='-ml-3 w-min'>
-							<FaArrowAltCircleRight size={48}/>
-							Learn More
-						</Button>
-						<Image className='rounded-md object-fit bottom-4  self-end' src={data.href} width={450} height={450} alt='image.png' />
-						
-					</CardContent>
-				</TransitionCard>
-			)}
-		</div>
+		<Card className='mb-24 bg-secondary'>
+			<CardHeader>
+				<CardHeader>
+					<CardTitle>About Us</CardTitle>
+				</CardHeader>
+			</CardHeader>
+			<CardContent>
+				<div className='grid grid-cols-2 space-x-8'>
+					<div className=' space-y-8'>
+						<h1>Claude 3.7 Sonnet and Other Stuff</h1>
+						<p>Introducing Claude 3.7 Sonnet, our most intelligent model yet and the first hybrid reasoning model. We’re also launching Claude Code, an agentic tool for coding.</p>
+						<Button>Read more about us</Button>
+					</div>
+					<div className='flex gap-8'>
+					<TransitionLink href='/' className='flex items-center gap-4 ' >
+						<Card className='h-72 hover:bg-accent transition'>
+							<CardHeader>
+								<CardTitle>
+									See our doctors
+								</CardTitle>
+							</CardHeader>
+							<CardContent className='flex flex-col justify-center grow'>
+								<Image alt='head.png' className='h-24 object-contain ' src="/images/art/head.png" height={100} width={200} />
+							</CardContent>
+							<CardFooter  className='flex gap-4'>
+									Learn more
+								<FaCircleArrowRight />
+							</CardFooter>
+						</Card>
+					</TransitionLink>
+					<TransitionLink href='/' className='flex items-center gap-4 ' >
+						<Card className='h-72 hover:bg-accent transition'>
+							<CardHeader>
+								<CardTitle>
+									See our doctors
+								</CardTitle>
+							</CardHeader>
+							<CardContent className='flex flex-col justify-center grow'>
+								<Image alt='head.png' className="h-24 object-contain " src="/images/art/paper-and-hand.png" height={100} width={200} />
+							</CardContent>
+							<CardFooter className='flex gap-4'>
+								Learn more <FaCircleArrowRight />
+							</CardFooter>
+						</Card>
+					</TransitionLink>
+					</div>
+				</div>
+			</CardContent>
+		</Card>
+	
 
-		<div className='relative py-6 flex mb-24 flex-col text-background'>
-			<ColorBanner />
-			<CardTitle className='text-background my-8'>
-				Put our 20+ years of virtual care expertise to work for you
-			</CardTitle>
-			<div className='max-m:grid grid-cols-3 gap-12 '>
+		<div className='relative py-6 flex mb-24 flex-col '>
+			<h1 className='my-8 ml-4'>
+				What we can do
+			</h1>
+			<div className='grid grid-cols-3 gap-8 justify-center w-full'>
 					{yearsexperiencesidebannerdata.map((data, index) => (
-				<TransitionCard key={index} className="flex bg-primary text-background border-none flex-col gap-4">
+				<TransitionCard key={index} className="flex bg-white flex-col gap-4">
 					<CardHeader>
-					<CardTitle>{data.title}</CardTitle>
+						<CardTitle>{data.title}</CardTitle>
 					</CardHeader>
-					<CardContent>{data.description}</CardContent>
+					<CardContent>
+						<h1 className='text-2lg! mb-4'>Title {index}</h1>
+						{data.description}
+					</CardContent>
 				</TransitionCard>
 				))}
 			</div>
 
 		</div>
 
-		<LeftRight>
-			<Accordion type="single" collapsible className="md:w-[50%] max-md:w-full h-32">
-			<AccordionItem value="item-1">
-				<AccordionTrigger>Is it accessible?</AccordionTrigger>
-					<AccordionContent>
-					Yes. It adheres to the WAI-ARIA design pattern.
-					</AccordionContent>
-				</AccordionItem>
-				<AccordionItem value="item-2">
-					<AccordionTrigger>Is it styled?</AccordionTrigger>
-					<AccordionContent>
-					Yes. It comes with default styles that matches the other
-					components&apos; aesthetic.
-					</AccordionContent>
-				</AccordionItem>
-				<AccordionItem value="item-3">
-					<AccordionTrigger>Is it animated?</AccordionTrigger>
-					<AccordionContent>
-					Yes. Its animated by default, but you can disable it if you prefer.
-					</AccordionContent>
-				</AccordionItem>
-			</Accordion>
-			<Image alt='organization.png' src="/images/organizations/Group 315.png" className='object-contain' width={200} height={200} />
-		</LeftRight>
+	
 	</div>
   )
 }

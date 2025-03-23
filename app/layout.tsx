@@ -11,6 +11,11 @@ const font = Montserrat({
 	subsets: ["latin"],
 });
 
+export const titleFont = Montserrat({
+	weight: "600",
+	subsets: ["latin"],
+})
+
 
 
 export const metadata: Metadata = {

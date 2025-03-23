@@ -34,12 +34,19 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
 
   const handleTransition = async (e: any) => {
     e.preventDefault();
+	if (href == pathname)
+	{
+		window.scrollTo(0, 0); // Scroll to top after navigation
+		return;
+	}
     if (onClick) 
 		onClick();
     const main = document.querySelector('main');
     main?.classList.add('page-transition');
 	await sleep(100);
     router.push(href);
+	window.scrollTo(0, 0); // Scroll to top after navigation
+
   };
 
   return (
