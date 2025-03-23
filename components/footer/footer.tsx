@@ -3,7 +3,7 @@ import ColorBanner from '../ui/colorbanner';
 
 export default function Footer() {
   return (
-    <footer className="py-8 max-md:text-center mt-24 text-primary relative">
+    <footer className=" overflow-x-hidden py-8 max-md:text-center mt-24 text-primary relative">
 		<ColorBanner />
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-between">

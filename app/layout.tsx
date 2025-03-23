@@ -32,11 +32,11 @@ export default function RootLayout({
 		<ClerkProvider>
 			<html lang="en" className="overflow-x-hidden">
 				<body className={`${font.className} w-screen overflow-x-hidden antialiased`}>
-					<header className="mb-32 ">
+					<header className="mb-32">
 						<NavBar />
 					</header>
-					<main className="max-w-7xl page-transition min-h-screen mx-auto px-2 flex flex-col">
-						<div className="grow">
+					<main className="max-w-7xl page-transition min-h-screen flex flex-col">
+						<div className="grow  mx-2">
 							{children}
 						</div>
 						<Footer />

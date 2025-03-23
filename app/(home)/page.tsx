@@ -13,6 +13,10 @@ import {
 import Title from '@/components/ui/title'
 import { TransitionLink } from '@/components/animations/transitionlink'
 import { FaCircleArrowRight } from "react-icons/fa6";
+import TypewriterText from '@/components/animations/typewriter'
+import Animate from '@/components/animations/animate'
+import Link from 'next/link'
+import { SignUpButton } from '@clerk/nextjs'
 
   
 
@@ -21,10 +25,12 @@ export default function Page() {
 	<div>
 		<p className='text-center'>Victoria, this IS the sample.</p>
 		<LeftRight>
-			<div className='md:w-[60%] md:my-36 max-md:my-1 '>
-				<h1 className='text-5xl mb-10 ml-8'>AI research and products that put safety at frontier</h1>
-				<div className='md:grid md:grid-cols-2 md:space-x-8 space-y-8'>
-					<Card className='h-72'>
+			<div className='md:w-[70%] md:my-36 '>
+				<Animate>
+					<TypewriterText className='text-5xl max-md:text-center mb-10 ml-4 max-md:h-52 md:h-28' text='AI research and products that put safety at frontier' />
+				</Animate>
+				<Animate delay={1} className='flex max-md:flex-col max-md:items-center  md:space-x-8 space-y-8'>
+					<Card className='h-84 w-72'>
 						<CardHeader>
 							<CardTitle>Claude.ai</CardTitle>
 						</CardHeader>
@@ -39,7 +45,7 @@ export default function Page() {
 							<Button className='grow' >Book Now</Button>
 						</CardFooter>
 					</Card>
-					<Card className='h-72'>
+					<Card className='h-84 w-72'>
 						<CardHeader>
 							<CardTitle>Claude.ai</CardTitle>
 						</CardHeader>
@@ -52,31 +58,34 @@ export default function Page() {
 							</p>
 						</CardContent>
 						<CardFooter>
-							<Button className='grow' variant="outline" >Book Now</Button>
+							<SignUpButton>
+
+								<Button  className='grow' variant="outline" >Create an Account</Button>
+							</SignUpButton>
 						</CardFooter>
 					</Card>
-				</div>
+				</Animate>
 			</div>
-			<div className='max-lg:hidden grow'> 
+			<Animate delay={1.5} className='max-lg:hidden grow'> 
 				<Image loading='eager' src="/images/art/hands-and-heart.png" alt='group.png' className='w-full' height={600} width={600}/>
-			</div>
+			</Animate>
 
 		</LeftRight>
 
-		<Card className='mb-24 bg-secondary'>
+		<Card className='mb-24 bg-secondary mt-12' id='about'>
 			<CardHeader>
 				<CardHeader>
 					<CardTitle>About Us</CardTitle>
 				</CardHeader>
 			</CardHeader>
 			<CardContent>
-				<div className='grid grid-cols-2 space-x-8'>
-					<div className=' space-y-8'>
+				<div className='md:grid grid-cols-2 md:space-x-8 '>
+					<div className='space-y-8 max-md:text-center'>
 						<h1>Claude 3.7 Sonnet and Other Stuff</h1>
 						<p>Introducing Claude 3.7 Sonnet, our most intelligent model yet and the first hybrid reasoning model. We’re also launching Claude Code, an agentic tool for coding.</p>
 						<Button>Read more about us</Button>
 					</div>
-					<div className='flex gap-8'>
+					<div className='flex max-md:flex-col max-md:mt-4 items-center gap-8'>
 					<TransitionLink href='/' className='flex items-center gap-4 ' >
 						<Card className='h-72 hover:bg-accent transition'>
 							<CardHeader>
@@ -118,7 +127,7 @@ export default function Page() {
 			<h1 className='my-8 ml-4'>
 				What we can do
 			</h1>
-			<div className='grid grid-cols-3 gap-8 justify-center w-full'>
+			<div className='md:grid space-y-8 grid-cols-3 gap-8 justify-center w-full'>
 					{yearsexperiencesidebannerdata.map((data, index) => (
 				<TransitionCard key={index} className="flex bg-white flex-col gap-4">
 					<CardHeader>
