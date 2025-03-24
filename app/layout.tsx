@@ -31,7 +31,7 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en" className="overflow-x-hidden">
-				<body className={`${font.className} w-screen overflow-x-hidden antialiased`}>
+				<body className={`${font.className} w-screen antialiased`}>
 					<header className="mb-32">
 						<NavBar />
 					</header>

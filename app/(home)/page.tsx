@@ -27,22 +27,25 @@ export default function Page() {
 		<LeftRight>
 			<div className='md:w-[70%] md:my-36 '>
 				<Animate>
-					<TypewriterText className='text-5xl max-md:text-center mb-10 ml-4 max-md:h-52 md:h-28' text='AI research and products that put safety at frontier' />
+					<TypewriterText className='text-5xl max-md:text-center mb-10 ml-4 max-md:h-64 md:h-36' text='AI research and products that put safety at frontier' />
 				</Animate>
 				<Animate delay={1} className='flex max-md:flex-col max-md:items-center  md:space-x-8 space-y-8'>
 					<Card className='h-84 w-72'>
 						<CardHeader>
-							<CardTitle>Claude.ai</CardTitle>
+							<CardTitle>Get Started</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<Title>Meet Claude 3.7 Sonnet
+							<Title>
+								Schedule an Appointment with a Doctor
 							</Title>
 							<p>
-							Claude 3.7 Sonnet, our most intelligent AI model, is now available.
+								Choose from experienced doctors, through video-call, text, or in-person
 							</p>
 						</CardContent>
 						<CardFooter>
-							<Button className='grow' >Book Now</Button>
+							<TransitionLink href='/create/appointment' className='grow'>
+								<Button className='w-full'>Book Now</Button>
+							</TransitionLink>
 						</CardFooter>
 					</Card>
 					<Card className='h-84 w-72'>
@@ -50,17 +53,16 @@ export default function Page() {
 							<CardTitle>Claude.ai</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<Title>Meet Claude 3.7 Sonnet
+							<Title>
+								Have a Personalized Account
 							</Title>
 							<p>
-							Meet Claude 3.7 Sonnet
-							Claude 3.7 Sonnet, our most intelligent AI model, is now available.
+							Have one accont that stores your medical history, manage appointments, and more.
 							</p>
 						</CardContent>
 						<CardFooter>
 							<SignUpButton>
-
-								<Button  className='grow' variant="outline" >Create an Account</Button>
+								<Button  className='grow' variant="outline" >Sign In / Create</Button>
 							</SignUpButton>
 						</CardFooter>
 					</Card>
@@ -81,8 +83,9 @@ export default function Page() {
 			<CardContent>
 				<div className='md:grid grid-cols-2 md:space-x-8 '>
 					<div className='space-y-8 max-md:text-center'>
-						<h1>Claude 3.7 Sonnet and Other Stuff</h1>
-						<p>Introducing Claude 3.7 Sonnet, our most intelligent model yet and the first hybrid reasoning model. We’re also launching Claude Code, an agentic tool for coding.</p>
+						<h1>This can be a section about the doctors.</h1>
+						<p>You can talk about who they are, what they do, and their goals for example. And anything of information blah blah blah
+						</p>
 						<Button>Read more about us</Button>
 					</div>
 					<div className='flex max-md:flex-col max-md:mt-4 items-center gap-8'>
@@ -123,26 +126,42 @@ export default function Page() {
 		</Card>
 	
 
-		<div className='relative py-6 flex mb-24 flex-col '>
+		<Card className='relative py-6 flex mb-24 flex-col '>
 			<h1 className='my-8 ml-4'>
 				What we can do
 			</h1>
 			<div className='md:grid space-y-8 grid-cols-3 gap-8 justify-center w-full'>
 					{yearsexperiencesidebannerdata.map((data, index) => (
-				<TransitionCard key={index} className="flex bg-white flex-col gap-4">
+				<TransitionCard key={index} className="flex bg-background flex-col gap-4">
 					<CardHeader>
 						<CardTitle className='max-md:text-center'>{data.title}</CardTitle>
 					</CardHeader>
 					<CardContent className='max-md:text-center'>
-						<h1 className='text-2lg! mb-4'>Title {index}</h1>
+						<h1 className='text-2lg! mb-4'>Example {index}</h1>
 						{data.description}
 					</CardContent>
 				</TransitionCard>
 				))}
 			</div>
 
-		</div>
-
+		</Card>
+		<LeftRight className='gap-12 mb-24 pt- '>
+			<Image className='md:w-[50%]' src="/images/art/helping.png" alt='get-started.png' width={400} height={400}  />
+			<Card className='md:w-[50%]'> 
+				<CardHeader>
+					<CardTitle>Get Started</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<h1>Come See Us!</h1>
+					<p>This is just random text: Anthropic is an AI safety and research company based in San Francisco. Our interdisciplinary team has experience across ML, physics, policy, and product. Together, we generate research and create reliable, beneficial AI systems.</p>
+				</CardContent>
+				<CardFooter>
+					<TransitionLink href='/create/appointment' className=''>
+						<Button>Get Started</Button>
+					</TransitionLink>
+				</CardFooter>
+			</Card>
+		</LeftRight>
 	
 	</div>
   )

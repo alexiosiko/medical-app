@@ -53,16 +53,16 @@ const components: { title: string; href: string; description: string }[] = [
 export function DropDownMenu() {
 return (
 	
-	<NavigationMenu className="max-md:hidden flex gap-4">
+	<NavigationMenu className="max-md:hidden ">
 		<NavigationMenuList>
 			<NavigationMenuItem>
 			<NavigationMenuTrigger>Appointments</NavigationMenuTrigger>
-				<NavigationMenuContent className="flex flex-col w-96">
-					<TransitionLink href='/create/appointment' className="hover:bg-accent rounded-sm">
+				<NavigationMenuContent className=" w-96 flex flex-col">
+					<TransitionLink href='/create/appointment' className="hover:bg-accent p-2 rounded-sm">
 						<CardTitle className='text-md'>Book Appointment</CardTitle>
 						<CardDescription>Book a time and a place to get started!</CardDescription>
 					</TransitionLink>
-					<TransitionLink href='/manage/appointments' className="hover:bg-accent rounded-sm">
+					<TransitionLink href='/manage/appointments' className="hover:bg-accent p-2 rounded-sm">
 						<CardTitle className='text-md'>Manage</CardTitle>
 						<CardDescription>Manage your appointments</CardDescription>
 					</TransitionLink>

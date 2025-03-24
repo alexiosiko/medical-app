@@ -50,7 +50,7 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
   };
 
   return (
-    <Link className={`${className} p-3`} {...props} href={href} onClick={handleTransition}>
+    <Link className={`${className}`} {...props} href={href} onClick={handleTransition}>
       {children}
     </Link>
   );

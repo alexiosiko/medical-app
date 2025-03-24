@@ -21,17 +21,17 @@ export function Sidebar() {
 			<SheetHeader>
 				<SheetTitle className="text-center">Navigation</SheetTitle>
 			</SheetHeader>
-				<div className="flex flex-col items-center">
+				<div className="flex flex-col items-center gap-2">
 					
 						<TransitionLink href="/" onClick={() => setOpen(false)}>Home</TransitionLink>
 						
-						<CardTitle className="mt-8">Account</CardTitle>
+						<CardTitle className="mt-8 text-2xl font-bold">Account</CardTitle>
 						<TransitionLink href="/profile" onClick={() => setOpen(false)}>Profile</TransitionLink>
 						<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Documents</TransitionLink>
 						<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Emergency Contacts</TransitionLink>
 						<TransitionLink href="" className="text-muted-foreground" onClick={() => {}}>Billing</TransitionLink>
 						
-						<CardTitle className="mt-8">Appointments</CardTitle>
+						<CardTitle className="mt-8 text-2xl font-bold">Appointments</CardTitle>
 						<TransitionLink href="/manage/appointments" onClick={() => setOpen(false)}>Manage</TransitionLink>
 						<TransitionLink href="/create/appointment" onClick={() => setOpen(false)}>Create</TransitionLink>
 					

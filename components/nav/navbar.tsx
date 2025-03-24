@@ -33,8 +33,8 @@ export default function NavBar() {
 			<div className='md:hidden'>
 				<Sidebar />
 			</div>
-			<TransitionLink href="/">
-				<Image className='object-contain' src="/logos/TDH_Logo_Full_Color_RGB.svg" height={200} width={200} alt='logo.svg' />
+			<TransitionLink href="/" className=' h-2/3'>
+				<Image className='object-contain h-full' src="/logos/TDH_Logo_Full_Color_RGB.svg" height={200} width={200} alt='logo.svg' />
 			</TransitionLink>
 			<div className='flex gap-4'>
 				<SignedOut>
