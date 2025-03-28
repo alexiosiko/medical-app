@@ -38,7 +38,7 @@ export default function StatusUpdater({ appointment }: { appointment: IAppointme
 		try {
 		const updateData = {
 			status: selectedStatus,
-			...(selectedStatus === 'approved' && {
+			...(selectedStatus === 'confirmed' && {
 			approvedAt: new Date(),
 			}),
 		};

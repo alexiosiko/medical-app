@@ -1,7 +1,8 @@
 // app/api/appointments/[id]/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import { dbPromise } from '@/lib/mongodb';
+import { auth } from '@clerk/nextjs/server';
 
 export async function PATCH(
   request: Request,
@@ -59,3 +60,54 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+	request: Request,
+	{ params }: { params: Promise<{ _id: string }> }
+  ) {
+	try {
+
+  
+	  const appointmentId = (await params)._id;
+	  
+	  if (!appointmentId) {
+		return NextResponse.json(
+		  { message: "Appointment ID is required" },
+		  { status: 400 }
+		);
+	  }
+  
+	  const db = await dbPromise();
+	  const { ObjectId } = await import('mongodb');
+  
+	  // Validate appointment ID format
+	  if (!ObjectId.isValid(appointmentId)) {
+		return NextResponse.json(
+		  { message: "Invalid appointment ID format" },
+		  { status: 400 }
+		);
+	  }
+  
+	  const result = await db.collection('appointments').deleteOne({
+		_id: new ObjectId(appointmentId),
+	  });
+  
+	  if (result.deletedCount === 0) {
+		return NextResponse.json(
+		  { message: "Appointment not found or not authorized" },
+		  { status: 404 }
+		);
+	  }
+  
+	  return NextResponse.json(
+		{ message: "Appointment deleted successfully" }
+	  );
+  
+	} catch (error: any) {
+	  console.error('DELETE error:', error);
+	  return NextResponse.json(
+		{ message: 'Internal server error' },
+		{ status: 500 }
+	  );
+	}
+  }

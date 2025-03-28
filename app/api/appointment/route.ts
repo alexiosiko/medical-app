@@ -12,61 +12,7 @@ export const config = {
   };
 
   
-export async function DELETE(request: NextRequest) {
-	try {
-	  const { userId } = await auth();
-	  if (!userId) {
-		return NextResponse.json(
-		  { message: "Unauthorized" }, 
-		  { status: 401 }
-		);
-	  }
-  
-	  const searchParams = request.nextUrl.searchParams;
-	  const appointmentId = searchParams.get('_id');
-	  
-	  if (!appointmentId) {
-		return NextResponse.json(
-		  { message: "Appointment ID is required" },
-		  { status: 400 }
-		);
-	  }
-  
-	  const db = await dbPromise();
-	  const { ObjectId } = await import('mongodb');
-  
-	  // Validate appointment ID format
-	  if (!ObjectId.isValid(appointmentId)) {
-		return NextResponse.json(
-		  { message: "Invalid appointment ID format" },
-		  { status: 400 }
-		);
-	  }
-  
-	  const result = await db.collection('appointments').deleteOne({
-		_id: new ObjectId(appointmentId),
-		createdBy: userId
-	  });
-  
-	  if (result.deletedCount === 0) {
-		return NextResponse.json(
-		  { message: "Appointment not found or not authorized" },
-		  { status: 404 }
-		);
-	  }
-  
-	  return NextResponse.json(
-		{ message: "Appointment deleted successfully" }
-	  );
-  
-	} catch (error: any) {
-	  console.error('DELETE error:', error);
-	  return NextResponse.json(
-		{ message: 'Internal server error' },
-		{ status: 500 }
-	  );
-	}
-  }
+
 
 export async function POST(req: NextRequest) {
 	try {

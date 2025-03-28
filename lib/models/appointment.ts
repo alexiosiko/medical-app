@@ -1,7 +1,7 @@
 import { Schema, model, Types } from 'mongoose';
 
 
-export type AppointmentStatus = 'approved' | 'denied' | 'pending';
+export type AppointmentStatus = 'confirmed' | 'pending' | 'cancelled' | 'completed';
  
 // 1. Create an interface representing a document in MongoDB.
 export type IAppointment = {

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { IAppointment, AppointmentStatus } from '@/lib/models/appointment';
 import { Button } from '@/components/ui/button';
@@ -24,9 +24,9 @@ export default function AdminAppointment({ appointment, onStatusChange }: AdminA
     try {
       const updateData = {
         status: newStatus,
-        ...(newStatus === 'approved' && {
-          approvedBy: 'Admin', // Replace with actual admin ID
-          approvedAt: new Date()
+        ...(newStatus === 'confirmed' && {
+          lastUpdatedBy: 'Admin', // Replace with actual admin ID
+          lastUpdatedAt: new Date()
         })
       };
 
@@ -45,16 +45,22 @@ export default function AdminAppointment({ appointment, onStatusChange }: AdminA
 
   const getStatusBadge = () => {
     switch (appointment.status) {
-      case 'approved':
+      case 'confirmed':
         return (
           <Badge className="bg-green-500 hover:bg-green-600">
-            <CheckCircle2 className="w-3 h-3 mr-1" /> Approved
+            <CheckCircle2 className="w-3 h-3 mr-1" /> Confirmed
           </Badge>
         );
-      case 'denied':
+      case 'cancelled':
         return (
           <Badge className="bg-red-500 hover:bg-red-600">
-            <XCircle className="w-3 h-3 mr-1" /> Denied
+            <XCircle className="w-3 h-3 mr-1" /> Cancelled
+          </Badge>
+        );
+      case 'completed':
+        return (
+          <Badge className="bg-blue-500 hover:bg-blue-600">
+            <CheckCircle2 className="w-3 h-3 mr-1" /> Completed
           </Badge>
         );
       default:
@@ -103,47 +109,58 @@ export default function AdminAppointment({ appointment, onStatusChange }: AdminA
                 <Button
                   size="sm"
                   className="gap-1 bg-green-600 hover:bg-green-700"
-                  onClick={() => updateStatus('approved')}
+                  onClick={() => updateStatus('confirmed')}
                   disabled={isUpdating}
                 >
                   <CheckCircle2 className="h-4 w-4" />
-                  Approve
+                  Confirm
                 </Button>
                 <Button
                   size="sm"
                   variant="destructive"
                   className="gap-1"
-                  onClick={() => updateStatus('denied')}
+                  onClick={() => updateStatus('cancelled')}
                   disabled={isUpdating}
                 >
                   <XCircle className="h-4 w-4" />
-                  Deny
+                  Cancel
                 </Button>
               </>
             )}
 
-            {appointment.status === 'approved' && (
-              <Button
-                size="sm"
-                variant="destructive"
-                className="gap-1"
-                onClick={() => updateStatus('denied')}
-                disabled={isUpdating}
-              >
-                <XCircle className="h-4 w-4" />
-                Cancel Approval
-              </Button>
+            {appointment.status === 'confirmed' && (
+              <>
+                <Button
+                  size="sm"
+                  className="gap-1 bg-blue-600 hover:bg-blue-700"
+                  onClick={() => updateStatus('completed')}
+                  disabled={isUpdating}
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  Mark Complete
+                </Button>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="gap-1"
+                  onClick={() => updateStatus('cancelled')}
+                  disabled={isUpdating}
+                >
+                  <XCircle className="h-4 w-4" />
+                  Cancel
+                </Button>
+              </>
             )}
 
-            {appointment.status === 'denied' && (
+            {appointment.status === 'cancelled' && (
               <Button
                 size="sm"
                 className="gap-1 bg-green-600 hover:bg-green-700"
-                onClick={() => updateStatus('approved')}
+                onClick={() => updateStatus('confirmed')}
                 disabled={isUpdating}
               >
                 <CheckCircle2 className="h-4 w-4" />
-                Re-approve
+                Re-confirm
               </Button>
             )}
 
@@ -168,15 +185,15 @@ export default function AdminAppointment({ appointment, onStatusChange }: AdminA
             <p>Created by: {appointment.createdBy}</p>
             <p>Created at: {format(new Date(appointment.createdAt), 'PPpp')}</p>
             {appointment.lastUpdatedBy && (
-              <p>Approved by: {appointment.lastUpdatedBy}</p>
+              <p>Last updated by: {appointment.lastUpdatedBy}</p>
             )}
             {appointment.lastUpdatedAt && (
-              <p>Approved at: {format(new Date(appointment.lastUpdatedAt), 'PPpp')}</p>
+              <p>Last updated at: {format(new Date(appointment.lastUpdatedAt), 'PPpp')}</p>
             )}
           </div>
         </div>
-		<div className="flex justify-end mt-4">
-		</div>
+        <div className="flex justify-end mt-4">
+        </div>
       </CardContent>
     </Card>
   );

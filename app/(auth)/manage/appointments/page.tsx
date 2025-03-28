@@ -23,6 +23,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import LoadingSkeleton from './loading';
 
 export default function AppointmentsAdminPage() {
     const [appointments, setAppointments] = useState<IAppointment[]>([]);
@@ -35,9 +36,7 @@ export default function AppointmentsAdminPage() {
         async function fetchAppointments() {
             try {
                 setIsLoading(true);
-                const res = await axios.get('/api/appointments', {
-                    params: { get_all: true }
-                });
+                const res = await axios.get('/api/appointments/user');
                 if (res.status !== 200) throw Error(res.data.message);
                 setAppointments(res.data);
             } catch (error) {
@@ -50,47 +49,56 @@ export default function AppointmentsAdminPage() {
         fetchAppointments();
     }, []);
 
-    const appointmentsByStatus = {
-        pending: appointments.filter(app => app.status === 'pending'),
-        approved: appointments.filter(app => app.status === 'approved'),
-        denied: appointments.filter(app => app.status === 'denied')
-    };
-
+	const appointmentsByStatus = {
+		pending: appointments.filter(app => app.status === 'pending'),
+		confirmed: appointments.filter(app => app.status === 'confirmed'),
+		cancelled: appointments.filter(app => app.status === 'cancelled'),
+		completed: appointments.filter(app => app.status === 'completed'),
+	  };
+	  
     const filteredAppointments = filter === 'all' 
         ? appointments 
         : appointments.filter(app => app.status === filter);
 
-    const handleCancelAppointment = async () => {
-        if (!appointmentToCancel) return;
-        
-        try {
-            const res = await axios.patch(`/api/appointment/${appointmentToCancel}`, {
-                status: 'denied'
-            });
-            
-            if (res.status === 200) {
-                setAppointments(appointments.map(app => 
-                    app._id?.toString() === appointmentToCancel ? { ...app, status: 'denied' } : app
-                ));
-                toast.success('Appointment cancelled successfully');
-            }
-        } catch (error) {
-            toast.error('Failed to cancel appointment');
-            console.error(error);
-        } finally {
-            setAppointmentToCancel(null);
-            setCancelDialogOpen(false);
-        }
-    };
+		const handleCancelAppointment = async () => {
+			if (!appointmentToCancel) return;
+		  
+			try {
+			  const res = await axios.patch(`/api/appointment/${appointmentToCancel}`, {
+				status: 'cancelled',
+			  });
+		  
+			  if (res.status === 200) {
+				setAppointments(appointments.map(app =>
+				  app._id?.toString() === appointmentToCancel ? { ...app, status: 'cancelled' } : app
+				));
+				toast.success('Appointment cancelled successfully');
+			  }
+			} catch (error) {
+			  toast.error('Failed to cancel appointment');
+			  console.error(error);
+			} finally {
+			  setAppointmentToCancel(null);
+			  setCancelDialogOpen(false);
+			}
+		  };
+		  
 
-    const getBadgeVariant = (status: AppointmentStatus) => {
-        switch (status) {
-            case 'pending': return 'secondary';
-            case 'approved': return 'default';
-            case 'denied': return 'destructive';
-            default: return 'outline';
-        }
-    };
+	const getBadgeVariant = (status: AppointmentStatus) => {
+		switch (status) {
+		  case 'pending':
+			return 'secondary';
+		  case 'confirmed':
+			return 'default';
+		  case 'cancelled':
+			return 'destructive';
+		  case 'completed':
+			return 'success';
+		  default:
+			return 'outline';
+		}
+	  };
+	  
 
     const getCommunicationIcon = (method: string) => {
         switch (method) {
@@ -101,75 +109,50 @@ export default function AppointmentsAdminPage() {
         }
     };
 
-    const LoadingSkeleton = () => (
-        <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-                <div key={i} className="border rounded-lg p-6 bg-white shadow-sm">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-                        <div className="space-y-4 flex-1">
-                            <div className="flex flex-wrap items-center gap-4">
-                                <Skeleton className="h-6 w-24 rounded-full" />
-                                <Skeleton className="h-4 w-40" />
-                            </div>
-                            
-                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                <Skeleton className="h-4 w-4 rounded-full" />
-                                <Skeleton className="h-4 w-32" />
-                            </div>
-                            
-                            <Skeleton className="h-4 w-full" />
-                            <Skeleton className="h-4 w-3/4" />
-                            
-                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                <Skeleton className="h-4 w-4 rounded-full" />
-                                <Skeleton className="h-4 w-48" />
-                            </div>
-                        </div>
-                        
-                        <div className="flex flex-col gap-2 min-w-[150px]">
-                            <Skeleton className="h-9 w-full" />
-                            <Skeleton className="h-9 w-full" />
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
+   
 
     return (
-        <TransitionDiv className="md:p-4 max-w-6xl mx-auto">
+        <TransitionDiv className="md:p-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <CardTitle className="text-2xl">Appointments Management</CardTitle>
                 
                 <div className="flex flex-wrap gap-2">
-                    <Button 
-                        variant={filter === 'all' ? 'default' : 'outline'}
-                        onClick={() => setFilter('all')}
-                        className="rounded-full"
-                    >
-                        All ({isLoading ? '-' : appointments.length})
-                    </Button>
-                    <Button 
-                        variant={filter === 'pending' ? 'default' : 'outline'}
-                        onClick={() => setFilter('pending')}
-                        className="rounded-full"
-                    >
-                        Pending ({isLoading ? '-' : appointmentsByStatus.pending.length})
-                    </Button>
-                    <Button 
-                        variant={filter === 'approved' ? 'default' : 'outline'}
-                        onClick={() => setFilter('approved')}
-                        className="rounded-full"
-                    >
-                        Approved ({isLoading ? '-' : appointmentsByStatus.approved.length})
-                    </Button>
-                    <Button 
-                        variant={filter === 'denied' ? 'default' : 'outline'}
-                        onClick={() => setFilter('denied')}
-                        className="rounded-full"
-                    >
-                        Denied ({isLoading ? '-' : appointmentsByStatus.denied.length})
-                    </Button>
+				<Button
+  variant={filter === 'all' ? 'default' : 'outline'}
+  onClick={() => setFilter('all')}
+  className="rounded-full"
+>
+  All ({isLoading ? '-' : appointments.length})
+</Button>
+<Button
+  variant={filter === 'pending' ? 'default' : 'outline'}
+  onClick={() => setFilter('pending')}
+  className="rounded-full"
+>
+  Pending ({isLoading ? '-' : appointmentsByStatus.pending.length})
+</Button>
+<Button
+  variant={filter === 'confirmed' ? 'default' : 'outline'}
+  onClick={() => setFilter('confirmed')}
+  className="rounded-full"
+>
+  Confirmed ({isLoading ? '-' : appointmentsByStatus.confirmed.length})
+</Button>
+<Button
+  variant={filter === 'cancelled' ? 'default' : 'outline'}
+  onClick={() => setFilter('cancelled')}
+  className="rounded-full"
+>
+  Cancelled ({isLoading ? '-' : appointmentsByStatus.cancelled.length})
+</Button>
+<Button
+  variant={filter === 'completed' ? 'default' : 'outline'}
+  onClick={() => setFilter('completed')}
+  className="rounded-full"
+>
+  Completed ({isLoading ? '-' : appointmentsByStatus.completed.length})
+</Button>
+
                 </div>
             </div>
 
@@ -219,20 +202,21 @@ export default function AppointmentsAdminPage() {
                                         </div>
                                         
                                         <div className="flex flex-col gap-2 min-w-[150px]">
-                                            {appointment.status !== 'denied' && (
-                                                <Button 
-                                                    variant="destructive" 
-                                                    size="sm"
-                                                    onClick={() => {
-                                                        setAppointmentToCancel(appointment._id?.toString()!);
-                                                        setCancelDialogOpen(true);
-                                                    }}
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    <X className="h-4 w-4" />
-                                                    Cancel
-                                                </Button>
-                                            )}
+										{appointment.status !== 'cancelled' && (
+  <Button
+    variant="destructive"
+    size="sm"
+    onClick={() => {
+      setAppointmentToCancel(appointment._id?.toString()!);
+      setCancelDialogOpen(true);
+    }}
+    className="flex items-center gap-2"
+  >
+    <X className="h-4 w-4" />
+    Cancel
+  </Button>
+)}
+
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +238,6 @@ export default function AppointmentsAdminPage() {
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction 
                             onClick={handleCancelAppointment}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                             Confirm Cancel
                         </AlertDialogAction>

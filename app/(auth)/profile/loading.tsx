@@ -1,6 +1,5 @@
 "use client"
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { TransitionCard, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';

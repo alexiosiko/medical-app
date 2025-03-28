@@ -9,7 +9,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { TransitionCard, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import Loading from './loading';
+
 import { Gender, IUser } from '@/lib/models/user';
 
 export default function UserProfileUpdate() {
@@ -97,9 +97,7 @@ export default function UserProfileUpdate() {
     }
   };
 
-  if (!isLoaded || loading) {
-    return <Loading />;
-  }
+
 
   return (
     <TransitionCard className="w-full max-w-md mx-auto">

@@ -9,7 +9,7 @@ import React from 'react'
 export default function page() {
 	const router = useRouter();
   return (
-	<TransitionCard className='max-w-lg mx-auto'>
+	<TransitionCard className=''>
 		<CardHeader>
 			<CardTitle>Successfully requested appointment!</CardTitle>
 		</CardHeader>
