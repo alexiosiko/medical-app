@@ -56,7 +56,7 @@ return (
 	<NavigationMenu className="max-md:hidden ">
 		<NavigationMenuList>
 			<NavigationMenuItem>
-			<NavigationMenuTrigger>Appointments</NavigationMenuTrigger>
+				<NavigationMenuTrigger>Appointments</NavigationMenuTrigger>
 				<NavigationMenuContent className=" w-96 flex flex-col">
 					<TransitionLink href='/create/appointment' className="hover:bg-accent p-2 rounded-sm">
 						<CardTitle className='text-md'>Book Appointment</CardTitle>
@@ -68,8 +68,8 @@ return (
 					</TransitionLink>
 				</NavigationMenuContent>
 			</NavigationMenuItem>
+			<TransitionLink href="/">Home</TransitionLink>
 		</NavigationMenuList>
-		<TransitionLink href="/">Home</TransitionLink>
 	</NavigationMenu>
 )
 }

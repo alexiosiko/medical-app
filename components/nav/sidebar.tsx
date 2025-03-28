@@ -35,6 +35,9 @@ export function Sidebar() {
 						<TransitionLink href="/manage/appointments" onClick={() => setOpen(false)}>Manage</TransitionLink>
 						<TransitionLink href="/create/appointment" onClick={() => setOpen(false)}>Create</TransitionLink>
 					
+						<CardTitle className="mt-8 text-2xl font-bold">Admin</CardTitle>
+						<TransitionLink href="/admin/manage/appointments" onClick={() => setOpen(false)}>Manage</TransitionLink>
+					
 				</div>
 			</SheetContent>
       </Sheet>

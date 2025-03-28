@@ -1,5 +1,8 @@
 import { Schema, model, Types } from 'mongoose';
 
+
+export type AppointmentStatus = 'approved' | 'denied' | 'pending';
+ 
 // 1. Create an interface representing a document in MongoDB.
 export type IAppointment = {
 	_id?: Types.ObjectId; // Mongoose ID type
@@ -7,14 +10,14 @@ export type IAppointment = {
 	time: string;
 	description: string;
 	communicationMethod: 'chat' | 'video' | 'in-person';
-	document?: Buffer;
-	fileName?: string;
-	fileType?: string;
+	document: Buffer | undefined;
+	fileName: string | undefined;
+	fileType: string | undefined;
 	createdBy: string;
 	createdAt: Date;
-	approvalStatus: 'approved' | 'denied' | 'pending';
-	approvedBy?: string;
-	approvedAt?: Date;
+	status: AppointmentStatus;
+	lastUpdatedBy: string | undefined;
+	lastUpdatedAt: Date | undefined;
 }
 
 // 2. Create a Schema corresponding to the document interface.
@@ -28,9 +31,9 @@ const appointmentSchema = new Schema<IAppointment>({
   fileType: String,
   createdBy: String, // Reference to user
   createdAt: { type: Date, default: Date.now },
-  approvalStatus: { type: String, enum: ['approved', 'denied', 'pending'], default: 'pending' },
-  approvedBy: String,
-  approvedAt: Date,
+  status: { type: String, enum: ['approved', 'denied', 'pending'], default: 'pending' },
+  lastUpdatedBy: String,
+  lastUpdatedAt: Date,
 });
 
 // 3. Create a Model.

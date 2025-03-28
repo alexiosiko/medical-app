@@ -15,7 +15,6 @@ import { TransitionLink } from '@/components/animations/transitionlink'
 import { FaCircleArrowRight } from "react-icons/fa6";
 import TypewriterText from '@/components/animations/typewriter'
 import Animate from '@/components/animations/animate'
-import Link from 'next/link'
 import { SignUpButton } from '@clerk/nextjs'
 
   
@@ -25,7 +24,7 @@ export default function Page() {
 	<div>
 		<p className='text-center'>Victoria, this IS the sample.</p>
 		<LeftRight>
-			<div className='md:w-[70%] md:my-36 '>
+			<div className='md:w-[60%] md:my-36 '>
 				<Animate>
 					<TypewriterText className='text-5xl max-md:text-center mb-10 ml-4 max-md:h-64 md:h-36' text='AI research and products that put safety at frontier' />
 				</Animate>
@@ -71,9 +70,7 @@ export default function Page() {
 			<Animate delay={1.5} className='max-lg:hidden grow'> 
 				<Image loading='eager' src="/images/art/hands-and-heart.png" alt='group.png' className='w-full' height={600} width={600}/>
 			</Animate>
-
 		</LeftRight>
-
 		<Card className='mb-24 bg-secondary mt-12' id='about'>
 			<CardHeader>
 				<CardHeader>

@@ -12,13 +12,11 @@ import {
 	NavigationMenu,
 	NavigationMenuContent,
 	NavigationMenuItem,
-	NavigationMenuLink,
 	NavigationMenuList,
 	NavigationMenuTrigger,
   } from "@/components/ui/navigation-menu"
 import { Button } from '../ui/button'
 import { PiSignInLight } from 'react-icons/pi'
-import Animate from '../animations/animate'
 import { Sidebar } from './sidebar'
 import { CardDescription, CardTitle } from '../ui/card'
 import { TransitionLink } from '../animations/transitionlink'
@@ -26,7 +24,7 @@ import { TransitionLink } from '../animations/transitionlink'
 export default function NavBar() {
   return (
 		<div
-			className='grid grid-cols-3  bg-background z-10 rounded-3xl fixed w-[95%] max-w-7xl top-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+			className='grid grid-cols-3  bg-background z-10 rounded-3xl fixed w-[95%] max-w-7xl md:top-16 max-md:top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2
 			shadow-lg items-center place-items-center'
 			>
 			<DropDownMenu />
@@ -49,6 +47,19 @@ export default function NavBar() {
 					</SignUpButton>
 				</SignedOut>
 				<SignedIn>
+					<NavigationMenu className='max-md:hidden'>
+						<NavigationMenuList>
+							<NavigationMenuItem>
+							<NavigationMenuTrigger>Admin</NavigationMenuTrigger>
+							<NavigationMenuContent className='flex flex-col'>
+									<TransitionLink href='/admin/manage/appointments' className='hover:bg-accent p-2 rounded-sm'>
+										<CardTitle className='text-md'>Manage</CardTitle>
+										<CardDescription>See ALL appointments.</CardDescription>
+									</TransitionLink>
+							</NavigationMenuContent>
+							</NavigationMenuItem>
+						</NavigationMenuList>
+					</NavigationMenu>
 					<NavigationMenu className='max-md:hidden'>
 						<NavigationMenuList>
 							<NavigationMenuItem>

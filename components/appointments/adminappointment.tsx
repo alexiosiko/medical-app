@@ -1,163 +1,183 @@
-import React, { useEffect, useState } from 'react'
-import { formatDate } from '@/lib/time';
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
-import { AlertDialogHeader, AlertDialogFooter } from '@/components/ui/alert-dialog';
+"use client"
+
+import { IAppointment, AppointmentStatus } from '@/lib/models/appointment';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import { IAppointment } from '@/lib/models/appointment';
-import { Card, CardContent } from '../ui/card';
+import { CheckCircle2, XCircle, Clock, Download, CalendarDays, Clock as ClockIcon, Video, MessageSquare, User } from 'lucide-react';
 import { toast } from 'sonner';
-import { User } from '@clerk/nextjs/server';
 import axios from 'axios';
+import { useState } from 'react';
+import { format } from 'date-fns';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import StatusUpdater from './statusupdater';
 
+interface AdminAppointmentProps {
+  appointment: IAppointment;
+  onStatusChange: (updatedAppointment: IAppointment) => void;
+}
 
+export default function AdminAppointment({ appointment, onStatusChange }: AdminAppointmentProps) {
+  const [isUpdating, setIsUpdating] = useState(false);
 
-export default function AdminAppointment({ appointment }: {
-	appointment: IAppointment
-}) {
-	const [busy, setBusy] = useState<boolean>(false);
+  const updateStatus = async (newStatus: AppointmentStatus) => {
+    setIsUpdating(true);
+    try {
+      const updateData = {
+        status: newStatus,
+        ...(newStatus === 'approved' && {
+          approvedBy: 'Admin', // Replace with actual admin ID
+          approvedAt: new Date()
+        })
+      };
 
-	const handleDownload = (appointment: IAppointment) => {
-		try {
-			if (!appointment.fileName || !appointment || !appointment.document) 
-				return;
-		
-			// Decode the base64 string to a byte array
-			const byteCharacters = atob(appointment.document as any);
-			const byteNumbers = new Array(byteCharacters.length);
-			for (let i = 0; i < byteCharacters.length; i++) 
-				byteNumbers[i] = byteCharacters.charCodeAt(i);
-		
-			const byteArray = new Uint8Array(byteNumbers);
-		
-			// Create a Blob from the byte array
-			const blob = new Blob([byteArray], { type: 'application/pdf' }); // Adjust MIME type as needed
-		
-			// Create a URL for the Blob
-			const url = window.URL.createObjectURL(blob);
-		
-			// Create an anchor element
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = appointment.fileName;
-			a.style.display = 'none';
-		
-			// Append the anchor to the document body
-			document.body.appendChild(a);
-		
-			// Programmatically click the anchor to trigger the download
-			a.click();
-		
-			// Clean up by revoking the Object URL and removing the anchor
-			window.URL.revokeObjectURL(url);
-			document.body.removeChild(a);
-		} catch (error) {
-			console.error('Error downloading document: ', error);
-			toast.error('Failed to download document');
-		}
-	};
+      const res = await axios.patch(`/api/appointment/${appointment._id}`, updateData);
+      if (res.status === 200) {
+        onStatusChange({ ...appointment, ...updateData });
+        toast.success(`Appointment ${newStatus}`);
+      }
+    } catch (error) {
+      toast.error(`Failed to update status`);
+      console.error(error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
+  const getStatusBadge = () => {
+    switch (appointment.status) {
+      case 'approved':
+        return (
+          <Badge className="bg-green-500 hover:bg-green-600">
+            <CheckCircle2 className="w-3 h-3 mr-1" /> Approved
+          </Badge>
+        );
+      case 'denied':
+        return (
+          <Badge className="bg-red-500 hover:bg-red-600">
+            <XCircle className="w-3 h-3 mr-1" /> Denied
+          </Badge>
+        );
+      default:
+        return (
+          <Badge className="bg-yellow-500 hover:bg-yellow-600">
+            <Clock className="w-3 h-3 mr-1" /> Pending
+          </Badge>
+        );
+    }
+  };
 
-	const handleDelete = async (_id: string | undefined) => {
-		try {
-			setBusy(true);
-		} catch (e) {
+  const getCommunicationIcon = () => {
+    switch (appointment.communicationMethod) {
+      case 'video': return <Video className="w-4 h-4 text-blue-500" />;
+      case 'chat': return <MessageSquare className="w-4 h-4 text-green-500" />;
+      case 'in-person': return <User className="w-4 h-4 text-purple-500" />;
+      default: return null;
+    }
+  };
 
-		} finally {
-			setBusy(false);
-		}
+  return (
+    <Card className="mb-4">
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-lg">
+            {format(new Date(appointment.date), 'PPP')} at {appointment.time}
+          </CardTitle>
+          {getStatusBadge()}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          <div className="flex items-center gap-2 text-sm">
+            {getCommunicationIcon()}
+            <span className="capitalize">{appointment.communicationMethod.replace('-', ' ')}</span>
+          </div>
 
-	}
-	const handleDeny = async (_id: string | undefined) => {
-		try {
-			setBusy(true);
-		} catch (e) {
+          {appointment.description && (
+            <p className="text-sm text-gray-600">{appointment.description}</p>
+          )}
 
-		} finally {
-			setBusy(false);
-		}
-	}
-	return (
-		<motion.div 
-			layout="position"
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			key={appointment._id?.toString()}
-			exit={{ opacity: 0, x: 500 }}
-			className='mb-4'
-			>
-			<Card>
-				<CardContent className=" flex justify-between items-center">
-					<div>
-						<h3 className="font-semibold">
-							{new Date(appointment.date).toLocaleDateString()} - {appointment.time}
-						</h3>
-						<p className="text-gray-600">{appointment.description}</p>
-						<p className="text-sm text-gray-500">
-							Method: {appointment.communicationMethod}
-						</p>
-						{appointment.fileName && (
-							<p onClick={() => handleDownload(appointment)} className="text-sm text-blue-600">
-								Document: {appointment.fileName}
-							</p>
-						)}
-						<p>
-							Created at: {formatDate(appointment.createdAt)}
-						</p>
-						<p>
-							Created by: {appointment.createdBy}
-						</p>
-						{appointment.approvalStatus == 'approved' ?
-						<>	
-							<p>
-								Status: {appointment.approvalStatus}
-							</p>
-							<p>
-								Approved at: {formatDate(appointment.approvedAt)}
-							</p>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {/* Status Update Buttons */}
+            {appointment.status === 'pending' && (
+              <>
+                <Button
+                  size="sm"
+                  className="gap-1 bg-green-600 hover:bg-green-700"
+                  onClick={() => updateStatus('approved')}
+                  disabled={isUpdating}
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  Approve
+                </Button>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="gap-1"
+                  onClick={() => updateStatus('denied')}
+                  disabled={isUpdating}
+                >
+                  <XCircle className="h-4 w-4" />
+                  Deny
+                </Button>
+              </>
+            )}
 
-							<p>
-								Approved by: {appointment.approvedBy}
-							</p>
-						</> 
-						: <p>
-							Status: {appointment.approvalStatus}
-						</p>
-						}
-					
-					</div>
-					
-					<AlertDialog>
-					<AlertDialogTrigger asChild >
-						<Button disabled={busy}>
-							{busy ? 'Updating...' : 'Edit'}
-						</Button>
-					</AlertDialogTrigger>
-					<AlertDialogContent>
-						<AlertDialogHeader>
-						<AlertDialogTitle>Confirm Cancellation</AlertDialogTitle>
-						<AlertDialogDescription>
-							Are you sure you want to cancel this appointment? This action cannot be undone.
-						</AlertDialogDescription>
-						</AlertDialogHeader>
-						<AlertDialogFooter>
-						<AlertDialogCancel>Back</AlertDialogCancel>
-							<AlertDialogAction
-								onClick={() => handleDelete(appointment._id?.toString())}
-							>
-								Confirm
-							</AlertDialogAction>
-							<AlertDialogAction
-								onClick={() => handleDeny(appointment._id?.toString())}
-							>
-								Deny
-							</AlertDialogAction>
-					
-						</AlertDialogFooter>
-					</AlertDialogContent>
-					</AlertDialog>
-				</CardContent>
-			</Card>
-		</motion.div>
-	)
+            {appointment.status === 'approved' && (
+              <Button
+                size="sm"
+                variant="destructive"
+                className="gap-1"
+                onClick={() => updateStatus('denied')}
+                disabled={isUpdating}
+              >
+                <XCircle className="h-4 w-4" />
+                Cancel Approval
+              </Button>
+            )}
+
+            {appointment.status === 'denied' && (
+              <Button
+                size="sm"
+                className="gap-1 bg-green-600 hover:bg-green-700"
+                onClick={() => updateStatus('approved')}
+                disabled={isUpdating}
+              >
+                <CheckCircle2 className="h-4 w-4" />
+                Re-approve
+              </Button>
+            )}
+
+            {/* Document Download Button */}
+            {appointment.document && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1"
+                onClick={() => {
+                  // Download logic here
+                }}
+                disabled={isUpdating}
+              >
+                <Download className="h-4 w-4" />
+                Download
+              </Button>
+            )}
+          </div>
+
+          <div className="text-xs text-gray-500 mt-2">
+            <p>Created by: {appointment.createdBy}</p>
+            <p>Created at: {format(new Date(appointment.createdAt), 'PPpp')}</p>
+            {appointment.lastUpdatedBy && (
+              <p>Approved by: {appointment.lastUpdatedBy}</p>
+            )}
+            {appointment.lastUpdatedAt && (
+              <p>Approved at: {format(new Date(appointment.lastUpdatedAt), 'PPpp')}</p>
+            )}
+          </div>
+        </div>
+		<div className="flex justify-end mt-4">
+		</div>
+      </CardContent>
+    </Card>
+  );
 }

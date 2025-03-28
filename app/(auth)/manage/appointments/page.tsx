@@ -1,10 +1,18 @@
-"use client";
+"use client"
 
-import { useLayoutEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
-import { CardContent, Card, CardTitle } from '@/components/ui/card';
+import TransitionDiv from '@/components/animations/transitiondiv';
+import { CardTitle } from '@/components/ui/card';
+import { IAppointment, AppointmentStatus } from '@/lib/models/appointment';
+import axios from 'axios';
+import { AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { TransitionLink } from '@/components/animations/transitionlink';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { format } from 'date-fns';
+import { Calendar, Clock, MessageSquare, Video, User, X } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,203 +22,245 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { toast } from 'sonner';
-import axios from 'axios';
-import { AnimatePresence, motion } from 'framer-motion';
-import Loading from './loading';
-import TransitionDiv from '@/components/animations/transitiondiv';
-import { IAppointment } from '@/lib/models/appointment';
-import { formatDate } from '@/lib/time';
 
+export default function AppointmentsAdminPage() {
+    const [appointments, setAppointments] = useState<IAppointment[]>([]);
+    const [filter, setFilter] = useState<AppointmentStatus | 'all'>('all');
+    const [isLoading, setIsLoading] = useState(true);
+    const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+    const [appointmentToCancel, setAppointmentToCancel] = useState<string | null>(null);
+    
+    useEffect(() => {
+        async function fetchAppointments() {
+            try {
+                setIsLoading(true);
+                const res = await axios.get('/api/appointments', {
+                    params: { get_all: true }
+                });
+                if (res.status !== 200) throw Error(res.data.message);
+                setAppointments(res.data);
+            } catch (error) {
+                toast.error('Failed to load appointments');
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchAppointments();
+    }, []);
 
-export default function AppointmentsPage() {
-	const { userId, isLoaded } = useAuth();
-	const [ appointments, setAppointments] = useState<IAppointment[]>([]);
-	const [ loading, setLoading] = useState(true);
-	const [deletingId, setDeletingId] = useState<string | null>(null);
+    const appointmentsByStatus = {
+        pending: appointments.filter(app => app.status === 'pending'),
+        approved: appointments.filter(app => app.status === 'approved'),
+        denied: appointments.filter(app => app.status === 'denied')
+    };
 
-	useLayoutEffect(() => {
-		if (isLoaded && userId) {
-		fetchAppointments();
-		}
-	}, [isLoaded, userId]);
+    const filteredAppointments = filter === 'all' 
+        ? appointments 
+        : appointments.filter(app => app.status === filter);
 
-	const fetchAppointments = async () => {
-		try {
-		setLoading(true);
-		const response = await axios.get('/api/appointments');
-		const data = await response.data
-		setAppointments(data);
-		setLoading(false);
-		} catch (error) {
-		toast.error('Failed to load appointments');
-		}
-	};
+    const handleCancelAppointment = async () => {
+        if (!appointmentToCancel) return;
+        
+        try {
+            const res = await axios.patch(`/api/appointment/${appointmentToCancel}`, {
+                status: 'denied'
+            });
+            
+            if (res.status === 200) {
+                setAppointments(appointments.map(app => 
+                    app._id?.toString() === appointmentToCancel ? { ...app, status: 'denied' } : app
+                ));
+                toast.success('Appointment cancelled successfully');
+            }
+        } catch (error) {
+            toast.error('Failed to cancel appointment');
+            console.error(error);
+        } finally {
+            setAppointmentToCancel(null);
+            setCancelDialogOpen(false);
+        }
+    };
 
-	const handleDelete = async (appointment_id: string | undefined) => {
-		try {
-			if (!appointment_id)
-				throw Error("ObjectId is null?")
-			setDeletingId(appointment_id);
-			const response = await axios.delete('/api/appointments', {
-				params: {
-					_id: appointment_id
-				}
-			})
+    const getBadgeVariant = (status: AppointmentStatus) => {
+        switch (status) {
+            case 'pending': return 'secondary';
+            case 'approved': return 'default';
+            case 'denied': return 'destructive';
+            default: return 'outline';
+        }
+    };
 
+    const getCommunicationIcon = (method: string) => {
+        switch (method) {
+            case 'video': return <Video className="h-4 w-4" />;
+            case 'chat': return <MessageSquare className="h-4 w-4" />;
+            case 'in-person': return <User className="h-4 w-4" />;
+            default: return <MessageSquare className="h-4 w-4" />;
+        }
+    };
 
-			if (response.status != 200) 
-				throw Error('Failed to cancel appointment');
+    const LoadingSkeleton = () => (
+        <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+                <div key={i} className="border rounded-lg p-6 bg-white shadow-sm">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                        <div className="space-y-4 flex-1">
+                            <div className="flex flex-wrap items-center gap-4">
+                                <Skeleton className="h-6 w-24 rounded-full" />
+                                <Skeleton className="h-4 w-40" />
+                            </div>
+                            
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                <Skeleton className="h-4 w-4 rounded-full" />
+                                <Skeleton className="h-4 w-32" />
+                            </div>
+                            
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-3/4" />
+                            
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                <Skeleton className="h-4 w-4 rounded-full" />
+                                <Skeleton className="h-4 w-48" />
+                            </div>
+                        </div>
+                        
+                        <div className="flex flex-col gap-2 min-w-[150px]">
+                            <Skeleton className="h-9 w-full" />
+                            <Skeleton className="h-9 w-full" />
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 
-			setAppointments(prev => prev.filter(a => a._id?.toString() !== appointment_id));
-			toast.success('Appointment cancelled successfully');
-			} catch (error: any) {
-				console.log(error);
-				toast.error(error.message);
-			} finally {
-				setDeletingId(null);
-			}
-	};
+    return (
+        <TransitionDiv className="md:p-4 max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                <CardTitle className="text-2xl">Appointments Management</CardTitle>
+                
+                <div className="flex flex-wrap gap-2">
+                    <Button 
+                        variant={filter === 'all' ? 'default' : 'outline'}
+                        onClick={() => setFilter('all')}
+                        className="rounded-full"
+                    >
+                        All ({isLoading ? '-' : appointments.length})
+                    </Button>
+                    <Button 
+                        variant={filter === 'pending' ? 'default' : 'outline'}
+                        onClick={() => setFilter('pending')}
+                        className="rounded-full"
+                    >
+                        Pending ({isLoading ? '-' : appointmentsByStatus.pending.length})
+                    </Button>
+                    <Button 
+                        variant={filter === 'approved' ? 'default' : 'outline'}
+                        onClick={() => setFilter('approved')}
+                        className="rounded-full"
+                    >
+                        Approved ({isLoading ? '-' : appointmentsByStatus.approved.length})
+                    </Button>
+                    <Button 
+                        variant={filter === 'denied' ? 'default' : 'outline'}
+                        onClick={() => setFilter('denied')}
+                        className="rounded-full"
+                    >
+                        Denied ({isLoading ? '-' : appointmentsByStatus.denied.length})
+                    </Button>
+                </div>
+            </div>
 
-	const handleDownload = (appointment: IAppointment) => {
-		try {
-			if (!appointment.fileName || !appointment || !appointment.document) 
-				return;
-		
-			// Decode the base64 string to a byte array
-			const byteCharacters = atob(appointment.document as any);
-			const byteNumbers = new Array(byteCharacters.length);
-			for (let i = 0; i < byteCharacters.length; i++) {
-				byteNumbers[i] = byteCharacters.charCodeAt(i);
-			}
-			const byteArray = new Uint8Array(byteNumbers);
-		
-			// Create a Blob from the byte array
-			const blob = new Blob([byteArray], { type: 'application/pdf' }); // Adjust MIME type as needed
-		
-			// Create a URL for the Blob
-			const url = window.URL.createObjectURL(blob);
-		
-			// Create an anchor element
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = appointment.fileName;
-			a.style.display = 'none';
-		
-			// Append the anchor to the document body
-			document.body.appendChild(a);
-		
-			// Programmatically click the anchor to trigger the download
-			a.click();
-		
-			// Clean up by revoking the Object URL and removing the anchor
-			window.URL.revokeObjectURL(url);
-			document.body.removeChild(a);
-			} catch (error) {
-			console.error('Error downloading document:', error);
-			toast.error('Failed to download document');
-			}
-	};
+            {isLoading ? (
+                <LoadingSkeleton />
+            ) : (
+                <div className="space-y-4">
+                    <AnimatePresence>
+                        {filteredAppointments.length === 0 ? (
+                            <Alert className="bg-blue-50">
+                                <AlertDescription className="text-center py-8">
+                                    No {filter === 'all' ? '' : filter} appointments found
+                                </AlertDescription>
+                            </Alert>
+                        ) : (
+                            filteredAppointments.map((appointment) => (
+                                <div 
+                                    key={appointment._id?.toString()}
+                                    className="border rounded-lg p-6 bg-white shadow-sm transition-all hover:shadow-md"
+                                >
+                                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                                        <div className="space-y-4 flex-1">
+                                            <div className="flex flex-wrap items-center gap-4">
+                                                <Badge variant={getBadgeVariant(appointment.status)}>
+                                                    {appointment.status}
+                                                </Badge>
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                                                    {format(new Date(appointment.date), 'MMMM d, yyyy')}
+                                                    <Clock className="h-4 w-4 text-muted-foreground ml-2" />
+                                                    {appointment.time}
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                                {getCommunicationIcon(appointment.communicationMethod)}
+                                                {appointment.communicationMethod === 'in-person' ? 'In-Person' : 
+                                                 appointment.communicationMethod === 'video' ? 'Video Call' : 'Chat'}
+                                            </div>
+                                            
+                                            <p className="text-sm">{appointment.description}</p>
+                                            
+                                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                                <User className="h-4 w-4" />
+                                                {appointment.createdBy}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex flex-col gap-2 min-w-[150px]">
+                                            {appointment.status !== 'denied' && (
+                                                <Button 
+                                                    variant="destructive" 
+                                                    size="sm"
+                                                    onClick={() => {
+                                                        setAppointmentToCancel(appointment._id?.toString()!);
+                                                        setCancelDialogOpen(true);
+                                                    }}
+                                                    className="flex items-center gap-2"
+                                                >
+                                                    <X className="h-4 w-4" />
+                                                    Cancel
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </AnimatePresence>
+                </div>
+            )}
 
-	if (loading)
-		return <Loading />
-
-
-	return (
-		<TransitionDiv className="md:p-4 max-w-lg mx-auto">
-			<div className="flex max-md:flex-col justify-between items-center">
-				<CardTitle className="">My Appointments</CardTitle>
-				<TransitionLink href="/create/appointment">
-				<Button>New Appointment</Button>
-				</TransitionLink>
-			</div>
-
-		{appointments.length === 0 ? (
-			<div className="text-center text-gray-500">
-			No appointments scheduled yet.
-			</div>
-		) : (
-			<AnimatePresence>
-			{appointments.map((appointment) => (
-				<motion.div 
-					layout="position"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					key={appointment._id?.toString()}
-					exit={{ opacity: 0, x: 500 }}
-					className='mb-4'
-					>
-					<Card>
-						<CardContent className=" flex justify-between items-center">
-							<div>
-								<h3 className="font-semibold">
-									{new Date(appointment.date).toLocaleDateString()} - {appointment.time}
-								</h3>
-								<p className="text-gray-600">{appointment.description}</p>
-								<p className="text-sm text-gray-500">
-									Method: {appointment.communicationMethod}
-								</p>
-								{appointment.fileName && (
-									<p onClick={() => handleDownload(appointment)} className="text-sm text-blue-600">
-										Document: {appointment.fileName}
-									</p>
-								)}
-								<p>
-									Created at: {formatDate(appointment.createdAt)}
-								</p>
-								{appointment.approvalStatus == 'approved' ?
-								<>	
-									<p>
-										Status: {appointment.approvalStatus}
-									</p>
-									<p>
-										Approved at: {formatDate(appointment.approvedAt)}
-									</p>
-
-									<p>
-										Approved by: {appointment.approvedBy}
-									</p>
-								</> 
-								: <p>
-									Status: {appointment.approvalStatus}
-								</p>
-								}
-							</div>
-							
-							<AlertDialog>
-							<AlertDialogTrigger asChild >
-								<Button 
-								variant="destructive" 
-								disabled={deletingId === appointment._id?.toString()}
-								>
-								{deletingId === appointment._id?.toString() ? 'Cancelling...' : 'Cancel'}
-								</Button>
-							</AlertDialogTrigger>
-							<AlertDialogContent>
-								<AlertDialogHeader>
-								<AlertDialogTitle>Confirm Cancellation</AlertDialogTitle>
-								<AlertDialogDescription>
-									Are you sure you want to cancel this appointment? This action cannot be undone.
-								</AlertDialogDescription>
-								</AlertDialogHeader>
-								<AlertDialogFooter>
-								<AlertDialogCancel>Back</AlertDialogCancel>
-								<AlertDialogAction
-									onClick={() => handleDelete(appointment._id?.toString())}
-								>
-									Confirm Cancellation
-								</AlertDialogAction>
-								</AlertDialogFooter>
-							</AlertDialogContent>
-							</AlertDialog>
-						</CardContent>
-					</Card>
-				</motion.div>
-			))}
-			</AnimatePresence>
-		)}
-		</TransitionDiv>
-	);
+            <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure you want to cancel this appointment?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. The appointment will be marked as denied.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                            onClick={handleCancelAppointment}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                            Confirm Cancel
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </TransitionDiv>
+    );
 }
