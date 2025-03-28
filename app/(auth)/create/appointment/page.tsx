@@ -12,6 +12,18 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import handleTransition from '@/lib/transition'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+  } from '@/components/ui/alert-dialog';
+
+
 const BookingForm = () => {
   	const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 	const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
@@ -19,6 +31,7 @@ const BookingForm = () => {
 	const [communicationMethod, setCommunicationMethod] = useState<'chat' | 'video' | 'in-person'>('in-person');
 	const [document, setDocument] = useState<File | undefined>(undefined);
 	const [uploading, setUploading] = useState<boolean>(false);
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
 	const router = useRouter();
 
@@ -73,7 +86,7 @@ const BookingForm = () => {
 		</CardHeader>
       <CardContent className=''>
 	
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
           <div>
             <Label htmlFor="date">Date</Label>
             <Calendar
@@ -136,9 +149,28 @@ const BookingForm = () => {
               onChange={(e) => setDocument(e.target.files?.[0] || undefined)}
             />
           </div>
-          <Button disabled={uploading} type="submit">Submit Booking</Button>
-        </form>
+          <Button disabled={uploading} onClick={() => setConfirmDialogOpen(true)}>Submit Booking</Button>
+        </div>
       </CardContent>
+	  {/* Confirm Confirmation Dialog */}
+	  <AlertDialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure you want to CONFIRM this appointment?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will mark the appointment as CONFIRMED.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                            onClick={handleSubmit}
+                        >
+                            Confirm
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
     </TransitionCard>
   );
 };

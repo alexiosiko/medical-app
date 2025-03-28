@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import { Calendar, Clock, MessageSquare, Video, User, X, Trash2 } from 'lucide-react';
+import { Calendar, Clock, MessageSquare, Video, User, X, Trash2, Check } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   AlertDialog,
@@ -29,9 +29,11 @@ export default function AppointmentsAdminPage() {
     const [filter, setFilter] = useState<AppointmentStatus | 'all'>('all');
     const [isLoading, setIsLoading] = useState(true);
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [appointmentToCancel, setAppointmentToCancel] = useState<string | null>(null);
     const [appointmentToDelete, setAppointmentToDelete] = useState<string | null>(null);
+    const [appointmentToApprove, setAppointmentToConfirm] = useState<string | null>(null);
     
     useEffect(() => {
         async function fetchAppointments() {
@@ -103,6 +105,28 @@ export default function AppointmentsAdminPage() {
         } finally {
             setAppointmentToDelete(null);
             setDeleteDialogOpen(false);
+        }
+    };
+
+    const handleApproveAppointment = async () => {
+        if (!appointmentToApprove) return;
+        
+        try {
+            const res = await axios.patch(`/api/appointment/${appointmentToApprove}`, {
+                status: 'confirmed'
+            });
+            
+            if (res.status === 200) {
+                setAppointments(appointments.map(app => 
+                    app._id?.toString() === appointmentToApprove ? { ...app, status: 'confirmed' } : app
+                ));
+                toast.success('Appointment approved successfully');
+            }
+        } catch (error) {
+            toast.error('Failed to approve appointment');
+            console.error(error);
+        } finally {
+            setAppointmentToConfirm(null);
         }
     };
 
@@ -228,12 +252,39 @@ export default function AppointmentsAdminPage() {
                                         </div>
                                         
                                         <div className="flex flex-col gap-2 min-w-[150px]">
-                                            {appointment.status !== 'cancelled' && (
+                                            {appointment.status === 'pending' && (
+                                                <div className="flex flex-col gap-2">
+                                                    <Button
+                                                        size="sm"
+                                                        className="gap-1"
+                                                        onClick={() => {
+                                                            setAppointmentToConfirm(appointment._id?.toString() || '');
+                                                            setConfirmDialogOpen(true);
+                                                        }}
+                                                    >
+                                                        <Check className="h-4 w-4" />
+                                                        Confirm
+                                                    </Button>
+                                                    <Button
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            setAppointmentToCancel(appointment._id?.toString() || '');
+                                                            setCancelDialogOpen(true);
+                                                        }}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <X className="h-4 w-4" />
+                                                        Deny
+                                                    </Button>
+                                                </div>
+                                            )}
+                                            {appointment.status === 'confirmed' && (
                                                 <Button
                                                     variant="destructive"
                                                     size="sm"
                                                     onClick={() => {
-                                                        setAppointmentToCancel(appointment._id?.toString()!);
+                                                        setAppointmentToCancel(appointment._id?.toString() || '');
                                                         setCancelDialogOpen(true);
                                                     }}
                                                     className="flex items-center gap-2"
@@ -261,11 +312,31 @@ export default function AppointmentsAdminPage() {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>Back</AlertDialogCancel>
                         <AlertDialogAction 
                             onClick={handleCancelAppointment}
                         >
                             Confirm Cancel
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+           
+		    {/* Confirm Confirmation Dialog */}
+            <AlertDialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure you want to CONFIRM this appointment?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will mark the appointment as CONFIRMED.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                            onClick={handleApproveAppointment}
+                        >
+                            Confirm
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
